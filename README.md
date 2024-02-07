@@ -37,7 +37,7 @@ https://www.raspberrypi.com/products/raspberry-pi-pico/ (micro controller)
 ## Powercontrol
 - Pi Pico power consumption: Idle= 0.16W
 - Possible power sources:
-  - Cable(5V)
+  - Cable (5V)
   - Battery
     - AA Batteries (4xAA ca. 27Tage[Idle])
     - Battery-Pack
@@ -45,7 +45,14 @@ https://www.raspberrypi.com/products/raspberry-pi-pico/ (micro controller)
 
 
 ### Structure
+- Various Screens (Modes/Remotes/Devices)
+- Different Devices (for multiple Adapters)
+- Remote design (img of a remote control with clickable keys)??
 
 ### Functions
-- Creating different "Remotes"
+- Two modes:
+  - Emitting-Mode
+  - Receiving-Mode
+- Creating different "Remotes" (Storing different key combinations for various devices)
+
 ### Architecture
