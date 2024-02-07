@@ -10,7 +10,7 @@ Several smartphones with the `app` are able to communicate to the IR adapter.
 
 - https://irdroid.eu/product/usb-infrared-transceiver/ (IR)
 - https://www.mouser.de/c/optoelectronics/infrared-data-communications/infrared-emitters/ (list of IR emitter)
-https://www.raspberrypi.com/products/raspberry-pi-pico/ (micro controller)
+- https://www.raspberrypi.com/products/raspberry-pi-pico/ (micro controller)
 
 ---
 
