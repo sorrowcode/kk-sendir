@@ -25,4 +25,27 @@ https://www.raspberrypi.com/products/raspberry-pi-pico/ (micro controller)
 - devices
     - micro controller
     - IR emitter/receiver/transceiver
-    
+
+## Programming IR-Transceiver
+- Links:
+    - https://learn.sparkfun.com/tutorials/ir-communication/all (Explanation of basics)
+    - https://www.heise.de/hintergrund/Arduino-Multifunction-Shield-Infrarot-Fernbedienung-als-Steuerung-4844899.html (~)
+      
+    - https://github.com/Lime-Parallelogram/pyIR (Python Code for IR-Receiver: Repo)
+    - https://mc.mikrocontroller.com/de/IR-Protokolle.php (Explanation of some protocols)
+ 
+## Powercontrol
+- Pi Pico power consumption: Idle= 0.16W
+- Possible power sources:
+  - Cable(5V)
+  - Battery
+    - AA Batteries (4xAA ca. 27Tage[Idle])
+    - Battery-Pack
+## App-Design
+
+
+### Structure
+
+### Functions
+- Creating different "Remotes"
+### Architecture
