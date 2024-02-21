@@ -33,6 +33,8 @@ Several smartphones with the `app` are able to communicate to the IR adapter.
       
     - https://github.com/Lime-Parallelogram/pyIR (Python Code for IR-Receiver: Repo)
     - https://mc.mikrocontroller.com/de/IR-Protokolle.php (Explanation of some protocols)
+- Protocols:
+    - meistbenutzte Protokolle nutzen
  
 ## Powercontrol
 - Pi Pico power consumption: Idle= 0.16W
