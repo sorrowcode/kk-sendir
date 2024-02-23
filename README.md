@@ -52,6 +52,10 @@ Several smartphones with the `app` are able to communicate to the IR adapter.
 - Different Devices (for multiple Adapters)
 - Remote design (img of a remote control with clickable keys)??
 
+#### Possible Design:
+
+<img src="./assets/App%20Structure.png" alt="drawing" width="750"/>
+
 ### Functions
 - Two modes:
   - Emitting-Mode
