@@ -28,13 +28,37 @@ class _MyHomePageState extends State<MyHomePage> {
       drawer: Drawer(
         child: ListView(
           children: const [
-            DrawerHeader(
-              child: Text('Devices'),
+            SizedBox(
+              height: 100.0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  DrawerHeader(
+                    child: Text(
+                      'Devices',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 30.0,
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: null,
+                    icon: Icon(Icons.settings),
+                    padding: EdgeInsets.only(right: 15.0),
+                  )
+                ],
               ),
+            ),
               ListTile(
                 leading: Icon(Icons.settings_remote),
                 title: Text('Page 1')
                 ),
+              ListTile(
+                leading: Icon(Icons.abc),
+                title: Text('Page 2'),
+                )
           ],
        ),
       ),
