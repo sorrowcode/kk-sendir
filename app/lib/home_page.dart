@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class MyHomePage extends StatefulWidget {
 
@@ -12,10 +15,17 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
+  void _incrementCounter({int add = 0, bool zero = false}) {
+    if (zero) {
+      setState(() {
+        _counter = 0;
+      });
+    } else {
+      setState(() {
+      _counter += add;
     });
+    }
+    
   }
 
   @override
@@ -27,9 +37,9 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       drawer: Drawer(
         child: ListView(
-          children: const [
+          children: [
             SizedBox(
-              height: 100.0,
+              height: 75.0,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -77,10 +87,43 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed:() {
+          setState(() {
+            _incrementCounter(add: 1);
+          });
+        },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
+      bottomNavigationBar: BottomAppBar(
+        color: Color.fromARGB(255, 84, 101, 131),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            IconButton(
+              onPressed:() {
+                setState(() {
+                  _incrementCounter(add: 5);
+                });
+              },
+              icon: const Icon(Icons.settings_remote),
+              color: Colors.black,
+              hoverColor: Color.fromRGBO(50, 67, 88, 0.5),
+              highlightColor: Color.fromRGBO(50, 67, 88, 1),
+              tooltip: "Emitter",
+              ),
+              IconButton(
+                onPressed:() {
+                  setState(() {
+                    _incrementCounter(zero: true);
+                  });
+                }, 
+                icon: Icon(Icons.settings_remote_outlined),
+              ),
+          ],
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }
