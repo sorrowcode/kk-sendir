@@ -1,8 +1,14 @@
+import 'package:app/pages/settings.dart';
 import 'package:flutter/material.dart';
 
-class CustomDrawer extends StatelessWidget {
+class CustomDrawer extends StatefulWidget {
   const CustomDrawer({super.key});
 
+  @override
+  State<CustomDrawer> createState() => _CustomDrawerState();
+}
+
+class _CustomDrawerState extends State<CustomDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -10,11 +16,11 @@ class CustomDrawer extends StatelessWidget {
         children: [
           SizedBox(
             height: MediaQuery.of(context).size.height / 8,
-            child: const DrawerHeader(
+            child: DrawerHeader(
                 child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
+                const Text(
                   'Devices',
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -22,9 +28,13 @@ class CustomDrawer extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                  onPressed: null,
-                  icon: Icon(Icons.settings),
-                  padding: EdgeInsets.only(right: 15.0),
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const Settings(),
+                    ));
+                  },
+                  icon: const Icon(Icons.settings),
+                  padding: const EdgeInsets.only(right: 15.0),
                 )
               ],
             )),
