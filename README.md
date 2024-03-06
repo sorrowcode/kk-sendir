@@ -6,13 +6,6 @@
 
 Several smartphones with the `app` are able to communicate to the IR adapter.
 
-## Devices
-
-- https://irdroid.eu/product/usb-infrared-transceiver/ (IR)
-- https://www.mouser.de/c/optoelectronics/infrared-data-communications/infrared-emitters/ (list of IR emitter)
-- https://www.raspberrypi.com/products/raspberry-pi-pico/ (micro controller)
-- LED for feedback
-
 ---
 
 ## Todo
@@ -63,3 +56,10 @@ Several smartphones with the `app` are able to communicate to the IR adapter.
 - Creating different "Remotes" (Storing different key combinations for various devices)
 
 ### Architecture
+
+## Devices
+
+- ESP32 with USB-C port (Akku?)
+- (IR-Emitter)
+- (IR-Receiver)
+- LED

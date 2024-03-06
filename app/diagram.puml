@@ -1,0 +1,38 @@
+@startuml
+set namespaceSeparator ::
+
+class "app::home_page.dart::MyHomePage" {
+  +String title
+  +State<MyHomePage> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "app::home_page.dart::MyHomePage"
+
+class "app::home_page.dart::_MyHomePageState" {
+  -int _counter
+  -void _incrementCounter()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "app::home_page.dart::_MyHomePageState"
+
+class "app::pages::addDevice.dart::addDevice" {
+  +State<addDevice> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "app::pages::addDevice.dart::addDevice"
+
+class "app::pages::addDevice.dart::_addDeviceState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "app::pages::addDevice.dart::_addDeviceState"
+
+class "app::app.dart::MyApp" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "app::app.dart::MyApp"
+
+
+@enduml
