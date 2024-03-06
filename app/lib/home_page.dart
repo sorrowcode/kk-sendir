@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class MyHomePage extends StatefulWidget {
 
@@ -119,6 +118,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   });
                 }, 
                 icon: Icon(Icons.settings_remote_outlined),
+                color: Colors.black,
+                hoverColor: Color.fromRGBO(50, 67, 88, 0.5),
+                highlightColor: Color.fromRGBO(50, 67, 88, 1),
               ),
           ],
         ),
