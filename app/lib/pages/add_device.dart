@@ -2,14 +2,14 @@
 
 import 'package:flutter/material.dart';
 
-class addDevice extends StatefulWidget {
-  const addDevice({super.key});
+class AddDevice extends StatefulWidget {
+  const AddDevice({super.key});
 
   @override
-  State<addDevice> createState() => _addDeviceState();
+  State<AddDevice> createState() => _AddDeviceState();
 }
 
-class _addDeviceState extends State<addDevice> {
+class _AddDeviceState extends State<AddDevice> {
   @override
   Widget build(BuildContext context) {
     return const Placeholder();

@@ -97,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
       bottomNavigationBar: BottomAppBar(
         color: Color.fromARGB(255, 84, 101, 131),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             IconButton(
               onPressed:() {
@@ -110,18 +110,22 @@ class _MyHomePageState extends State<MyHomePage> {
               hoverColor: Color.fromRGBO(50, 67, 88, 0.5),
               highlightColor: Color.fromRGBO(50, 67, 88, 1),
               tooltip: "Emitter",
-              ),
-              IconButton(
-                onPressed:() {
-                  setState(() {
-                    _incrementCounter(zero: true);
-                  });
-                }, 
-                icon: Icon(Icons.settings_remote_outlined),
-                color: Colors.black,
-                hoverColor: Color.fromRGBO(50, 67, 88, 0.5),
-                highlightColor: Color.fromRGBO(50, 67, 88, 1),
-              ),
+            ),
+            SizedBox(
+              width: 30,
+            ),
+            IconButton(
+              onPressed:() {
+                setState(() {
+                  _incrementCounter(zero: true);
+                });
+              }, 
+              icon: Icon(Icons.settings_remote_outlined),
+              color: Colors.black,
+              hoverColor: Color.fromRGBO(50, 67, 88, 0.5),
+              highlightColor: Color.fromRGBO(50, 67, 88, 1),
+              tooltip: 'Receiver',
+            ),
           ],
         ),
       ),
