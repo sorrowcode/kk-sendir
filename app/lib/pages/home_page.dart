@@ -1,6 +1,8 @@
 import 'package:app/components/custom_bottom_navigation_bar.dart';
+import 'package:app/components/device_item.dart';
 import 'package:app/components/tab_manager/emitter_tab.dart';
 import 'package:app/components/tab_manager/receiver_tab.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:app/components/custom_drawer.dart';
 
@@ -16,6 +18,8 @@ class _MyHomePageState extends State<MyHomePage> {
     const EmitterTab(),
     const ReceiverTab(),
   ];
+
+  List<DeviceItem> _deviceItems = [];
 
   int _selectedIndex = 0;
 
@@ -56,13 +60,14 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      drawer: CustomDrawer(),
+      drawer: CustomDrawer(deviceItems: _deviceItems),
       body: Center(
         child: _navigationOptions.elementAt(_selectedIndex),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           setState(() {
+            _deviceItems.add(DeviceItem(deviceName: "deviceName"),);
             showDialog<String>(
                 context: context,
                 builder: (BuildContext context) => const Dialog(

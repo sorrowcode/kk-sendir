@@ -1,10 +1,13 @@
+import 'package:app/components/device_item.dart';
 import 'package:app/pages/settings.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class CustomDrawer extends StatefulWidget {
-  CustomDrawer({super.key});
+  CustomDrawer({super.key, required this.deviceItems});
 
-  final List<Widget> devices = [];
+  List<DeviceItem> deviceItems;
   //int selectedDevice = 0;
 
   @override
@@ -12,10 +15,76 @@ class CustomDrawer extends StatefulWidget {
 }
 
 class _CustomDrawerState extends State<CustomDrawer> {
+
+  List<Widget> _generateDeviceList() {
+    List<Widget> devices = [];
+    for(DeviceItem item in widget.deviceItems) {
+      devices.add(Card(
+        child: ListTile(
+          title: Text(item.deviceName),
+          trailing: Icon(Icons.more_vert),
+        ),
+      ),);
+    }
+    return devices;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: Scaffold(
+        child: ListView(
+      children: [
+        SizedBox(
+          height: MediaQuery.of(context).size.height / 8,
+          child: const DrawerHeader(
+              child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Devices',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 30.0,
+                ),
+              ),
+              IconButton(
+                onPressed: null,
+                icon: Icon(Icons.settings),
+                padding: EdgeInsets.only(right: 15.0),
+              ),
+            ],
+          )),
+        ),
+        Column(
+          children: _generateDeviceList(),
+        ),
+      ],
+    ));
+  }
+}
+
+/*
+class Device extends StatefulWidget {
+  Device({
+    super.key,
+    required this.name,
+    required this.listIndex,
+    this.isSelected = false,
+    this.online = false,
+  });
+
+  int listIndex;
+  bool isSelected;
+  final bool online;
+  final String name;
+
+  @override
+  State<Device> createState() => _DeviceState();
+}
+
+
+
+Scaffold(
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(60),
           child: Container(
@@ -64,29 +133,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
           ),
         ),
       ),
-    );
-  }
-}
 
-class Device extends StatefulWidget {
-  Device({
-    super.key,
-    required this.name,
-    required this.listIndex,
-    this.isSelected = false,
-    this.online = false,
-  });
-
-  int listIndex;
-  bool isSelected;
-  final bool online;
-  final String name;
-
-  @override
-  State<Device> createState() => _DeviceState();
-}
-
-/*
 class asdasd extends StatefulWidget {
   const asdasd({super.key});
 
@@ -114,7 +161,7 @@ class _asdasdState extends State<asdasd> {
     
   }
 }
-*/
+
 
 class _DeviceState extends State<Device> {
   @override
@@ -158,3 +205,4 @@ class _DeviceState extends State<Device> {
     );
   }
 }
+*/
