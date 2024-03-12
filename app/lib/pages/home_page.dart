@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:app/components/custom_drawer.dart';
 import 'package:app/components/custom_navigation_bar.dart';
-import 'package:app/components/tab_manager/tab_manager.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -45,13 +44,8 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       drawer: CustomDrawer(),
-      body: TabManager(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          setState(() {
-            TabManager().index = 0;
-          });
-        },
+        onPressed: () {},
         //tooltip: 'Increment',
         shape: CircleBorder(),
         elevation: 2,
