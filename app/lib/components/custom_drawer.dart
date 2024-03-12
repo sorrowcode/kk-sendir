@@ -1,4 +1,3 @@
-
 import 'package:app/pages/settings.dart';
 import 'package:flutter/material.dart';
 
@@ -17,38 +16,39 @@ class _CustomDrawerState extends State<CustomDrawer> {
   Widget build(BuildContext context) {
     return Drawer(
       child: Scaffold(
-
         appBar: PreferredSize(
-
           preferredSize: const Size.fromHeight(60),
           child: Container(
-
             margin: const EdgeInsets.only(top: 20),
             child: AppBar(
               leading: IconButton(
-                
                 onPressed: () {
                   setState(() {
-                    widget.devices.add(Device(name: 'Devicesadded', isSelected: true, listIndex: 0,));
+                    widget.devices.add(Device(
+                      name: 'Devicesadded',
+                      isSelected: true,
+                      listIndex: 0,
+                    ));
                   });
                 },
                 icon: const Icon(Icons.add),
-                ),
-              title: const Text('Devices', style: TextStyle(fontSize: 40.0),),
+              ),
+              title: const Text(
+                'Devices',
+                style: TextStyle(fontSize: 40.0),
+              ),
               actions: [
-            
                 IconButton(
                   iconSize: 30,
                   onPressed: () {
                     setState(() {
                       Navigator.of(context).push(MaterialPageRoute(
-            
                         builder: (context) => const Settings(),
-                        ));
+                      ));
                     });
                   },
                   icon: const Icon(Icons.settings),
-                  ),
+                ),
               ],
             ),
           ),
@@ -57,13 +57,13 @@ class _CustomDrawerState extends State<CustomDrawer> {
           color: Colors.yellow,
           margin: const EdgeInsets.fromLTRB(50, 50, 10, 0),
           child: ListView.builder(
-                itemCount: widget.devices.length,
-                itemBuilder: (context, index) {
-                  return widget.devices[index];
-                },
-              ),
+            itemCount: widget.devices.length,
+            itemBuilder: (context, index) {
+              return widget.devices[index];
+            },
+          ),
         ),
-        ),
+      ),
     );
   }
 }
@@ -71,11 +71,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
 class Device extends StatefulWidget {
   Device({
     super.key,
-    required this.name, 
-    required this.listIndex, 
-    this.isSelected = false, 
+    required this.name,
+    required this.listIndex,
+    this.isSelected = false,
     this.online = false,
-    });
+  });
 
   int listIndex;
   bool isSelected;
@@ -120,7 +120,6 @@ class _DeviceState extends State<Device> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      
       child: Container(
         height: 40,
         color: Colors.amber,
@@ -128,21 +127,22 @@ class _DeviceState extends State<Device> {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            
-            widget.isSelected ? Container(
-              width: 5,
-              height: 20,
-              color: Colors.green,
-              
-            ) : Container(),
-            
-            Text(widget.name, style: const TextStyle(fontSize: 20,)),
-            
+            widget.isSelected
+                ? Container(
+                    width: 5,
+                    height: 20,
+                    color: Colors.green,
+                  )
+                : Container(),
+            Text(widget.name,
+                style: const TextStyle(
+                  fontSize: 20,
+                )),
             Visibility(
               visible: widget.isSelected,
               child: IconButton(
                 iconSize: 30,
-                onPressed:() {
+                onPressed: () {
                   setState(() {
                     CustomDrawer customDrawer = CustomDrawer();
                     customDrawer.devices.removeAt(widget.listIndex);
@@ -151,8 +151,7 @@ class _DeviceState extends State<Device> {
                 },
                 icon: const Icon(Icons.more_vert),
               ),
-            ), 
-            
+            ),
           ],
         ),
       ),

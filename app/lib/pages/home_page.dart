@@ -1,8 +1,8 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
+import 'package:app/components/custom_bottom_navigation_bar.dart';
+import 'package:app/components/tab_manager/emitter_tab.dart';
+import 'package:app/components/tab_manager/receiver_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:app/components/custom_drawer.dart';
-import 'package:app/components/custom_navigation_bar.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -12,28 +12,41 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final List<Widget> _navigationOptions = <Widget>[
+    const EmitterTab(),
+    const ReceiverTab(),
+  ];
+
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text('HomeScreen'),
+        title: const Text('HomeScreen'),
         centerTitle: true,
         actions: [
           Padding(
-            padding: EdgeInsets.only(right: 30),
+            padding: const EdgeInsets.only(right: 30),
             child: Container(
               width: 28,
               height: 28,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.black, // border color
                 shape: BoxShape.circle,
               ),
               child: Padding(
-                padding: EdgeInsets.all(2), // border width
+                padding: const EdgeInsets.all(2), // border width
                 child: Container(
                   // or ClipRRect if you need to clip the content
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     shape: BoxShape.circle,
                     color: Colors.green, // inner circle color
                   ),
@@ -44,14 +57,28 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       drawer: CustomDrawer(),
+      body: Center(
+        child: _navigationOptions.elementAt(_selectedIndex),
+      ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          setState(() {
+            showDialog<String>(
+                context: context,
+                builder: (BuildContext context) => const Dialog(
+                      child: Text("Add Device"),
+                    ));
+          });
+        },
         //tooltip: 'Increment',
-        shape: CircleBorder(),
+        shape: const CircleBorder(),
         elevation: 2,
         child: const Icon(Icons.add),
       ),
-      bottomNavigationBar: CustomNavigationBar(),
+      bottomNavigationBar: CustomBottomNavigationBar(
+        selectedIndex: _selectedIndex,
+        onItemTapped: _onItemTapped,
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
