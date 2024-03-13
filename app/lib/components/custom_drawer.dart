@@ -1,80 +1,125 @@
-import 'package:app/components/device_item.dart';
-import 'package:app/pages/settings.dart';
-import 'package:flutter/cupertino.dart';
+// ignore_for_file: must_be_immutable
+
+import 'package:Remote_Control/components/device_item.dart';
+import 'package:Remote_Control/pages/home_page.dart';
+//import 'package:Remote_Control/pages/home_page.dart';
+import 'package:Remote_Control/pages/settings.dart';
+//import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+//import 'package:flutter/widgets.dart';
 
 class CustomDrawer extends StatefulWidget {
-  CustomDrawer({super.key, required this.deviceItems});
+  CustomDrawer({super.key, required this.deviceItems, required this.selectedDevice,});
+
 
   List<DeviceItem> deviceItems;
-  //int selectedDevice = 0;
-
+  int selectedDevice;
+  
   @override
   State<CustomDrawer> createState() => _CustomDrawerState();
 }
 
 class _CustomDrawerState extends State<CustomDrawer> {
 
+  void removeEntry(index) {
+    MyHomePage().selectedDevice = index ;
+    setState(() {
+      widget.deviceItems.removeAt(index);
+    });
+  }
+
   List<Widget> _generateDeviceList() {
+
     List<Widget> devices = [];
-    for(DeviceItem item in widget.deviceItems) {
-      devices.add(Card(
-        child: ListTile(
-          title: Text(item.deviceName),
-          trailing: Icon(Icons.more_vert),
-        ),
-      ),);
+    for (DeviceItem item in widget.deviceItems) {
+      int index = widget.deviceItems.indexOf(item);
+      devices.add(
+
+        Device(
+          name: item.deviceName, 
+          listIndex: index,
+          removeEntry: removeEntry,
+          selectedDevice: widget.selectedDevice,
+          onTap: () {
+            
+            setState(() {
+              widget.selectedDevice = index;
+            });
+          },
+          )
+      );
     }
+
     return devices;
   }
+
+  
+
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
-        child: ListView(
-      children: [
-        SizedBox(
-          height: MediaQuery.of(context).size.height / 8,
-          child: const DrawerHeader(
-              child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
+        child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(60),
+          child: Container(
+            margin: const EdgeInsets.only(top: 20),
+            child: AppBar(
+              leading: IconButton(
+                onPressed: () {
+                  setState(() {
+                    widget.deviceItems.add(DeviceItem(
+                      deviceName: 'Devicesadded',
+                    ));
+                  });
+                },
+                icon: const Icon(Icons.add),
+              ),
+              title: const Text(
                 'Devices',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 30.0,
+                style: TextStyle(fontSize: 40.0),
+              ),
+              actions: [
+                IconButton(
+                  iconSize: 30,
+                  onPressed: () {
+                    setState(() {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const Settings(),
+                      ));
+                    });
+                  },
+                  icon: const Icon(Icons.settings),
                 ),
-              ),
-              IconButton(
-                onPressed: null,
-                icon: Icon(Icons.settings),
-                padding: EdgeInsets.only(right: 15.0),
-              ),
-            ],
-          )),
+              ],
+            ),
+          ),
         ),
-        Column(
-          children: _generateDeviceList(),
-        ),
-      ],
-    ));
+        body: Container(
+          margin: const EdgeInsets.fromLTRB(20, 50, 10, 0),
+          child: ListView(
+            children: _generateDeviceList()
+            ),
+      )
+        )
+      );
   }
 }
 
-/*
 class Device extends StatefulWidget {
   Device({
     super.key,
     required this.name,
     required this.listIndex,
-    this.isSelected = false,
+    required this.removeEntry,
+    required this.onTap,
+    this.selectedDevice = -1,
     this.online = false,
   });
-
+  void Function(int) removeEntry;
+  void Function() onTap;
   int listIndex;
-  bool isSelected;
+  int selectedDevice;
   final bool online;
   final String name;
 
@@ -83,6 +128,87 @@ class Device extends StatefulWidget {
 }
 
 
+
+
+
+class _DeviceState extends State<Device> {
+
+  bool isSelected() {
+    if (widget.selectedDevice == widget.listIndex) {
+      return true;
+    }else {
+      return false;
+    }
+  } 
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: isSelected()? Colors.green: Colors.red,
+        child: ListTile(
+          splashColor: Colors.transparent,
+          onTap: () {
+            setState(() {
+              widget.onTap();
+            });
+          },
+          title: Text(widget.name),
+          trailing: PopupMenuButton(
+            onSelected: (item) {
+              setState(() {
+                if (item == 0) {
+                  widget.removeEntry(widget.listIndex);
+                }
+              });
+            },
+            itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+            const PopupMenuItem(
+              value: 1,
+              child: Text('Edit'),
+            ),
+            const PopupMenuItem(
+              value: 0,
+              child: Text('Delete'),
+            ),
+          ],
+          ),
+        ),
+      );
+  }
+}
+
+
+
+
+/*
+child: ListView(
+          children: [
+            SizedBox(
+              height: MediaQuery.of(context).size.height / 8,
+              child: const DrawerHeader(
+                child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Devices',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 30.0,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: null,
+                    icon: Icon(Icons.settings),
+                    padding: EdgeInsets.only(right: 15.0),
+                  ),
+                ],
+              )),
+            ),
+            Column(
+              children: _generateDeviceList(),
+            ),
+          ],
+    )
 
 Scaffold(
         appBar: PreferredSize(
@@ -93,10 +219,8 @@ Scaffold(
               leading: IconButton(
                 onPressed: () {
                   setState(() {
-                    widget.devices.add(Device(
-                      name: 'Devicesadded',
-                      isSelected: true,
-                      listIndex: 0,
+                    widget.deviceItems.add(DeviceItem(
+                      deviceName: 'Devicesadded',
                     ));
                   });
                 },
@@ -125,84 +249,11 @@ Scaffold(
         body: Container(
           color: Colors.yellow,
           margin: const EdgeInsets.fromLTRB(50, 50, 10, 0),
-          child: ListView.builder(
-            itemCount: widget.devices.length,
-            itemBuilder: (context, index) {
-              return widget.devices[index];
-            },
-          ),
+          child: ListView(
+            children: [
+              _generateDeviceList();
+            ],
         ),
-      ),
-
-class asdasd extends StatefulWidget {
-  const asdasd({super.key});
-
-  @override
-  State<asdasd> createState() => _asdasdState();
-}
-
-class _asdasdState extends State<asdasd> {
-  @override
-  Widget build(BuildContext context) {
-    
-    return ListTile(
-      onTap: () {
-        setState(() {
-          if (widget.isSelected) {
-            widget.isSelected = false;
-          }else {
-            widget.isSelected = true;
-          }
-        });
-      },
-      title: Text(widget.name, style: const TextStyle(fontSize: 20,)),
-      trailing: const Icon(Icons.more_vert),
-    );
-    
-  }
-}
-
-
-class _DeviceState extends State<Device> {
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      child: Container(
-        height: 40,
-        color: Colors.amber,
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            widget.isSelected
-                ? Container(
-                    width: 5,
-                    height: 20,
-                    color: Colors.green,
-                  )
-                : Container(),
-            Text(widget.name,
-                style: const TextStyle(
-                  fontSize: 20,
-                )),
-            Visibility(
-              visible: widget.isSelected,
-              child: IconButton(
-                iconSize: 30,
-                onPressed: () {
-                  setState(() {
-                    CustomDrawer customDrawer = CustomDrawer();
-                    customDrawer.devices.removeAt(widget.listIndex);
-                    print(widget);
-                  });
-                },
-                icon: const Icon(Icons.more_vert),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+      )
+        )
 */

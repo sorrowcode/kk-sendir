@@ -1,5 +1,5 @@
-import 'package:app/pages/home_page.dart';
-import 'package:app/pages/settings.dart';
+import 'package:Remote_Control/pages/home_page.dart';
+import 'package:Remote_Control/pages/settings.dart';
 import 'package:flutter/material.dart';
 
 class MyApp extends StatelessWidget {
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       routes: {
-        '/': (context) => const MyHomePage(),
+        '/': (context) => MyHomePage(),
         '/settings': (context) => const Settings(),
       },
     );

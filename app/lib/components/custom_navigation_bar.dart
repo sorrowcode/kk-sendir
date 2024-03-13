@@ -1,89 +1,43 @@
-import 'package:app/components/tab_manager/add_device_tab.dart';
-import 'package:app/components/tab_manager/emitter_tab.dart';
-import 'package:app/components/tab_manager/receiver_tab.dart';
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
 
-class CustomNavigationBar extends StatefulWidget {
-  CustomNavigationBar({super.key});
+class CustomNavigationBar extends StatelessWidget {
+  int selectedIndex;
+  void Function(int) onItemTapped;
+  CustomNavigationBar(
+      {super.key, required this.selectedIndex, required this.onItemTapped});
 
-  final List<Widget> tabs = <Widget>[
-    const AddDevicesTab(),
-    const EmitterTab(),
-    const ReceiverTab(),
-  ];
-  @override
-  State<CustomNavigationBar> createState() => _CustomNavigationBarState();
-}
-
-class _CustomNavigationBarState extends State<CustomNavigationBar> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Theme.of(context).colorScheme.inversePrimary,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20),
-        child: GNav(
-          selectedIndex: 0,
-          onTabChange: (selectedIndex) {
-            return;
-          },
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          tabBackgroundColor:
-              Theme.of(context).colorScheme.primary.withOpacity(0.5),
-          tabBorderRadius: 100,
-          tabActiveBorder: Border.all(
-              color: Theme.of(context).colorScheme.primary, width: 1),
-          padding: const EdgeInsets.all(16),
-          curve: Curves.easeInCirc,
-          haptic: true,
-          gap: 8,
-          tabs: const [
-            GButton(
-              icon: Icons.settings_remote,
-              text: 'Emitter',
-            ),
-            GButton(
-              icon: Icons.settings_remote_outlined,
-              text: 'Receiver',
-            ),
-          ],
+    return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
+      backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      items:  [
+        const BottomNavigationBarItem(
+          icon: Icon(Icons.settings_remote_outlined),
+          activeIcon: Icon(Icons.settings_remote),
+          label: "Emitter",
         ),
-      ),
+        
+        BottomNavigationBarItem(
+          icon: Transform.scale(
+                    scaleY: -1,
+                    child: const Icon(
+                      Icons.signal_wifi_0_bar, 
+                    ),
+                  ),
+          label: "Receiver",
+          activeIcon: Transform.scale(
+                  scaleY: -1,
+                  child: const Icon(
+                    Icons.signal_wifi_4_bar, 
+                  ),
+                ),
+          )
+      ],
+      currentIndex: selectedIndex,
+      onTap: onItemTapped,
     );
-
-/*
-    return BottomAppBar(
-      color: Theme.of(context).colorScheme.inversePrimary,
-      shape: const CircularNotchedRectangle(),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          IconButton(
-            onPressed: () {
-              setState(() {
-                TabManager();
-              });
-            },
-            icon: const Icon(Icons.settings_remote),
-          ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width / 10,
-          ),
-          IconButton(
-            onPressed: () {
-              setState(() {
-                
-              });
-            },
-            icon: const Icon(Icons.settings_remote_outlined),
-          ),
-        ],
-      ),
-    );
-    */
   }
 }

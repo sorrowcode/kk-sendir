@@ -1,19 +1,28 @@
-import 'package:app/components/custom_bottom_navigation_bar.dart';
-import 'package:app/components/device_item.dart';
-import 'package:app/components/tab_manager/emitter_tab.dart';
-import 'package:app/components/tab_manager/receiver_tab.dart';
-import 'package:flutter/cupertino.dart';
+// ignore_for_file: must_be_immutable
+
+import 'package:Remote_Control/components/custom_navigation_bar.dart';
+import 'package:Remote_Control/components/device_item.dart';
+import 'package:Remote_Control/components/tab_manager/emitter_tab.dart';
+import 'package:Remote_Control/components/tab_manager/receiver_tab.dart';
 import 'package:flutter/material.dart';
-import 'package:app/components/custom_drawer.dart';
+import 'package:Remote_Control/components/custom_drawer.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+  MyHomePage({super.key});
+
+  int selectedDevice = 0;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  TextEditingController textController = TextEditingController();
+  
+  late String deviceName;
+
   final List<Widget> _navigationOptions = <Widget>[
     const EmitterTab(),
     const ReceiverTab(),
@@ -60,18 +69,71 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      drawer: CustomDrawer(deviceItems: _deviceItems),
+      drawer: CustomDrawer(deviceItems: _deviceItems, selectedDevice: widget.selectedDevice,),
       body: Center(
         child: _navigationOptions.elementAt(_selectedIndex),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           setState(() {
-            _deviceItems.add(DeviceItem(deviceName: "deviceName"),);
             showDialog<String>(
                 context: context,
-                builder: (BuildContext context) => const Dialog(
-                      child: Text("Add Device"),
+                builder: (BuildContext context) => Dialog(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Stack(
+                                  alignment: AlignmentDirectional.bottomCenter,
+                                  children: [ 
+                                    IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          Navigator.of(context).pop();
+                                        });
+                                      },
+                                      icon: const Icon(Icons.close),
+                                    ),
+                                    const Text('Close')
+                                  ]
+                                ),
+                              ],
+                            ),
+                            TextField(
+                              controller: textController,
+                              maxLines: null,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.deny(RegExp(r'^\s')),
+                              ],
+                              decoration: InputDecoration(
+                                hintStyle: TextStyle(color: Theme.of(context).colorScheme.primary),
+                                hintText: 'Enter a name for the device',
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            ElevatedButton.icon(
+                              onPressed: () {
+                                setState(() {
+                                  deviceName = textController.text;
+                                  if (deviceName == "") {}else {
+                                    _deviceItems.add(DeviceItem(deviceName: deviceName));
+                                    Navigator.of(context).pop();
+                                    textController.clear();
+                                  }
+                                });
+                                },
+                              label: const Text('Add Device'),
+                              icon: const Icon(Icons.add)
+                            ),
+                          ],
+                        ),
+                      ),
                     ));
           });
         },
@@ -80,7 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
         elevation: 2,
         child: const Icon(Icons.add),
       ),
-      bottomNavigationBar: CustomBottomNavigationBar(
+      bottomNavigationBar: CustomNavigationBar(
         selectedIndex: _selectedIndex,
         onItemTapped: _onItemTapped,
       ),

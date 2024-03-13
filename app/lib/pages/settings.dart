@@ -1,4 +1,4 @@
-import 'package:app/pages/home_page.dart';
+import 'package:Remote_Control/pages/home_page.dart';
 import 'package:flutter/material.dart';
 
 class Settings extends StatelessWidget {
@@ -13,7 +13,7 @@ class Settings extends StatelessWidget {
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop(MaterialPageRoute(
-              builder: (context) => const MyHomePage(),
+              builder: (context) => MyHomePage(),
             ));
           },
           icon: const Icon(Icons.arrow_back),
