@@ -1,4 +1,5 @@
 class DeviceItem {
   String deviceName;
-  DeviceItem({required this.deviceName});
+  var uuid;
+  DeviceItem({required this.deviceName, required this.uuid,});
 }

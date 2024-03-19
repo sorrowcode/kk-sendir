@@ -7,12 +7,14 @@ import 'package:Remote_Control/components/tab_manager/receiver_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:Remote_Control/components/custom_drawer.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
+import 'package:uuid/uuid.dart';
+
+var uuidCreator = Uuid();
+var selectedDevice;
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({super.key});
 
-  int selectedDevice = 0;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -69,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      drawer: CustomDrawer(deviceItems: _deviceItems, selectedDevice: widget.selectedDevice,),
+      drawer: CustomDrawer(deviceItems: _deviceItems,),
       body: Center(
         child: _navigationOptions.elementAt(_selectedIndex),
       ),
@@ -122,7 +124,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 setState(() {
                                   deviceName = textController.text;
                                   if (deviceName == "") {}else {
-                                    _deviceItems.add(DeviceItem(deviceName: deviceName));
+                                    _deviceItems.add(DeviceItem(deviceName: deviceName, uuid: uuidCreator.v4()));
                                     Navigator.of(context).pop();
                                     textController.clear();
                                   }
