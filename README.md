@@ -10,11 +10,14 @@ Several smartphones with the `app` are able to communicate to the IR adapter.
 
 ## Todo
 
-- "language" of the IR receiver
 - powercontrol?
 - app
     - design
-        - UI
+        - userinterface
+        - gesture detector
+        - animation controller
+        - remote control
+    - connection to back-end
     - architecture
 - devices
     - micro controller
