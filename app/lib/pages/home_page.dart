@@ -128,8 +128,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                     if (deviceName == "") {
                                     } else {
                                       _deviceItems.add(DeviceItem(
-                                          deviceName: deviceName,
-                                          ));
+                                        deviceName: deviceName,
+                                      ));
                                       Navigator.of(context).pop();
                                       textController.clear();
                                     }

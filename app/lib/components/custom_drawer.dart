@@ -72,7 +72,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
   }
 
   var CustomUUID;
-  
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
