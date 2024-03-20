@@ -14,7 +14,8 @@ class _SettingsState extends State<Settings> {
   Widget build(BuildContext context) {
 
 
-    final MaterialStateProperty<Color?> trackColor = MaterialStateProperty.resolveWith<Color?>(
+    final MaterialStateProperty<Color?> trackColor = 
+        MaterialStateProperty. resolveWith<Color?>(
       (Set<MaterialState> states) {
         // Track color when the switch is selected.
         if (states.contains(MaterialState.selected)) {
