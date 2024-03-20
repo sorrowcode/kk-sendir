@@ -131,7 +131,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     } else {
                                       _deviceItems.add(DeviceItem(
                                           deviceName: deviceName,
-                                          uuid: uuidCreator.v4()));
+                                          ));
                                       Navigator.of(context).pop();
                                       textController.clear();
                                     }
@@ -145,7 +145,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     ));
           });
         },
-        //tooltip: 'Increment',
         shape: const CircleBorder(),
         elevation: 2,
         child: const Icon(Icons.add),

@@ -1,8 +1,9 @@
+import 'package:uuid/uuid.dart';
+
 class DeviceItem {
   String deviceName;
-  var uuid;
+  String uuid = const Uuid().v4();
   DeviceItem({
     required this.deviceName,
-    required this.uuid,
   });
 }

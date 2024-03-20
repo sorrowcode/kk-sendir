@@ -2,11 +2,8 @@
 
 import 'package:Remote_Control/components/device_item.dart';
 import 'package:Remote_Control/pages/home_page.dart';
-//import 'package:Remote_Control/pages/home_page.dart';
 import 'package:Remote_Control/pages/settings.dart';
-//import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-//import 'package:flutter/widgets.dart';
 import 'package:uuid/uuid.dart';
 
 var uuidCreator = Uuid();
@@ -98,7 +95,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         onPressed: () {
                           setState(() {
                             widget.deviceItems.add(DeviceItem(
-                              uuid: CustomUUID = uuidCreator.v4(),
                               deviceName: CustomUUID,
                             ));
                           });

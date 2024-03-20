@@ -1,11 +1,9 @@
-// ignore_for_file: must_be_immutable
-
 import 'package:flutter/material.dart';
 
 class CustomNavigationBar extends StatelessWidget {
-  int selectedIndex;
-  void Function(int) onItemTapped;
-  CustomNavigationBar(
+  final int selectedIndex;
+  final void Function(int) onItemTapped;
+  const CustomNavigationBar(
       {super.key, required this.selectedIndex, required this.onItemTapped});
 
   @override
