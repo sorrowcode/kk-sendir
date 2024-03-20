@@ -15,14 +15,13 @@ var selectedDevice;
 class MyHomePage extends StatefulWidget {
   MyHomePage({super.key});
 
-
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
   TextEditingController textController = TextEditingController();
-  
+
   late String deviceName;
 
   final List<Widget> _navigationOptions = <Widget>[
@@ -71,7 +70,9 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      drawer: CustomDrawer(deviceItems: _deviceItems,),
+      drawer: CustomDrawer(
+        deviceItems: _deviceItems,
+      ),
       body: Center(
         child: _navigationOptions.elementAt(_selectedIndex),
       ),
@@ -90,29 +91,32 @@ class _MyHomePageState extends State<MyHomePage> {
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 Stack(
-                                  alignment: AlignmentDirectional.bottomCenter,
-                                  children: [ 
-                                    IconButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          Navigator.of(context).pop();
-                                        });
-                                      },
-                                      icon: const Icon(Icons.close),
-                                    ),
-                                    const Text('Close')
-                                  ]
-                                ),
+                                    alignment:
+                                        AlignmentDirectional.bottomCenter,
+                                    children: [
+                                      IconButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            Navigator.of(context).pop();
+                                          });
+                                        },
+                                        icon: const Icon(Icons.close),
+                                      ),
+                                      const Text('Close')
+                                    ]),
                               ],
                             ),
                             TextField(
                               controller: textController,
                               maxLines: null,
                               inputFormatters: [
-                                FilteringTextInputFormatter.deny(RegExp(r'^\s')),
+                                FilteringTextInputFormatter.deny(
+                                    RegExp(r'^\s')),
                               ],
                               decoration: InputDecoration(
-                                hintStyle: TextStyle(color: Theme.of(context).colorScheme.primary),
+                                hintStyle: TextStyle(
+                                    color:
+                                        Theme.of(context).colorScheme.primary),
                                 hintText: 'Enter a name for the device',
                               ),
                             ),
@@ -120,19 +124,21 @@ class _MyHomePageState extends State<MyHomePage> {
                               height: 10,
                             ),
                             ElevatedButton.icon(
-                              onPressed: () {
-                                setState(() {
-                                  deviceName = textController.text;
-                                  if (deviceName == "") {}else {
-                                    _deviceItems.add(DeviceItem(deviceName: deviceName, uuid: uuidCreator.v4()));
-                                    Navigator.of(context).pop();
-                                    textController.clear();
-                                  }
-                                });
+                                onPressed: () {
+                                  setState(() {
+                                    deviceName = textController.text;
+                                    if (deviceName == "") {
+                                    } else {
+                                      _deviceItems.add(DeviceItem(
+                                          deviceName: deviceName,
+                                          uuid: uuidCreator.v4()));
+                                      Navigator.of(context).pop();
+                                      textController.clear();
+                                    }
+                                  });
                                 },
-                              label: const Text('Add Device'),
-                              icon: const Icon(Icons.add)
-                            ),
+                                label: const Text('Add Device'),
+                                icon: const Icon(Icons.add)),
                           ],
                         ),
                       ),

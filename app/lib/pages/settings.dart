@@ -12,21 +12,17 @@ class _SettingsState extends State<Settings> {
   bool _onSelected = false;
   @override
   Widget build(BuildContext context) {
-
-
-    final MaterialStateProperty<Color?> trackColor = 
-        MaterialStateProperty. resolveWith<Color?>(
-      (Set<MaterialState> states) {
-        // Track color when the switch is selected.
-        if (states.contains(MaterialState.selected)) {
-          return Colors.amber;
-        }
-        // Otherwise return null to set default track color
-        // for remaining states such as when the switch is
-        // hovered, focused, or disabled.
-        return null;
+    final MaterialStateProperty<Color?> trackColor =
+        MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+      // Track color when the switch is selected.
+      if (states.contains(MaterialState.selected)) {
+        return Colors.amber;
       }
-    );
+      // Otherwise return null to set default track color
+      // for remaining states such as when the switch is
+      // hovered, focused, or disabled.
+      return null;
+    });
 
     final MaterialStateProperty<Color?> overlayColor =
         MaterialStateProperty.resolveWith<Color?>(

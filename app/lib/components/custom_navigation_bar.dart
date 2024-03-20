@@ -13,28 +13,27 @@ class CustomNavigationBar extends StatelessWidget {
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      items:  [
+      items: [
         const BottomNavigationBarItem(
           icon: Icon(Icons.settings_remote_outlined),
           activeIcon: Icon(Icons.settings_remote),
           label: "Emitter",
         ),
-        
         BottomNavigationBarItem(
           icon: Transform.scale(
-                    scaleY: -1,
-                    child: const Icon(
-                      Icons.signal_wifi_0_bar, 
-                    ),
-                  ),
+            scaleY: -1,
+            child: const Icon(
+              Icons.signal_wifi_0_bar,
+            ),
+          ),
           label: "Receiver",
           activeIcon: Transform.scale(
-                  scaleY: -1,
-                  child: const Icon(
-                    Icons.signal_wifi_4_bar, 
-                  ),
-                ),
-          )
+            scaleY: -1,
+            child: const Icon(
+              Icons.signal_wifi_4_bar,
+            ),
+          ),
+        )
       ],
       currentIndex: selectedIndex,
       onTap: onItemTapped,
