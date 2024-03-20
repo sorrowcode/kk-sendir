@@ -7,9 +7,7 @@ import 'package:Remote_Control/components/tab_manager/receiver_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:Remote_Control/components/custom_drawer.dart';
 import 'package:flutter/services.dart';
-import 'package:uuid/uuid.dart';
 
-var uuidCreator = Uuid();
 var selectedDevice;
 
 class MyHomePage extends StatefulWidget {
