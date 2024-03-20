@@ -89,9 +89,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       IconButton(
                         onPressed: () {
                           setState(() {
-                            widget.deviceItems.add(DeviceItem(
-                              deviceName: CustomUUID,
-                            ));
+                            widget.deviceItems.add(DeviceItem.debug());
                           });
                         },
                         icon: const Icon(Icons.add),

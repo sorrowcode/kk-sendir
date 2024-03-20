@@ -4,9 +4,9 @@ import 'package:Remote_Control/components/custom_navigation_bar.dart';
 import 'package:Remote_Control/components/device_item.dart';
 import 'package:Remote_Control/components/tab_manager/emitter_tab.dart';
 import 'package:Remote_Control/components/tab_manager/receiver_tab.dart';
+import 'package:Remote_Control/components/custom_fab.dart';
 import 'package:flutter/material.dart';
 import 'package:Remote_Control/components/custom_drawer.dart';
-import 'package:flutter/services.dart';
 
 var selectedDevice;
 
@@ -74,7 +74,19 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: _navigationOptions.elementAt(_selectedIndex),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: CustomFAB(deviceItems: _deviceItems),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: CustomNavigationBar(
+        selectedIndex: _selectedIndex,
+        onItemTapped: _onItemTapped,
+      ),
+    );
+  }
+}
+
+
+/*
+FloatingActionButton(
         onPressed: () {
           setState(() {
             showDialog<String>(
@@ -89,8 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 Stack(
-                                    alignment:
-                                        AlignmentDirectional.bottomCenter,
+                                    alignment: AlignmentDirectional.bottomCenter,
                                     children: [
                                       IconButton(
                                         onPressed: () {
@@ -113,8 +124,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               ],
                               decoration: InputDecoration(
                                 hintStyle: TextStyle(
-                                    color:
-                                        Theme.of(context).colorScheme.primary),
+                                    color: Theme.of(context).colorScheme.primary),
                                 hintText: 'Enter a name for the device',
                               ),
                             ),
@@ -140,18 +150,12 @@ class _MyHomePageState extends State<MyHomePage> {
                           ],
                         ),
                       ),
-                    ));
+                    )
+                    );
           });
         },
         shape: const CircleBorder(),
         elevation: 2,
         child: const Icon(Icons.add),
       ),
-      bottomNavigationBar: CustomNavigationBar(
-        selectedIndex: _selectedIndex,
-        onItemTapped: _onItemTapped,
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-    );
-  }
-}
+*/
