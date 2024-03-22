@@ -1,11 +1,11 @@
 // ignore_for_file: must_be_immutable
+import 'package:flutter/material.dart';
 
 import 'package:Remote_Control/components/custom_navigation_bar.dart';
 import 'package:Remote_Control/components/device_item.dart';
 import 'package:Remote_Control/components/tab_manager/emitter_tab.dart';
 import 'package:Remote_Control/components/tab_manager/receiver_tab.dart';
 import 'package:Remote_Control/components/custom_fab.dart';
-import 'package:flutter/material.dart';
 import 'package:Remote_Control/components/custom_drawer.dart';
 
 var selectedDevice;
@@ -40,8 +40,8 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: const Text('HomeScreen'),
         centerTitle: true,
         actions: [
@@ -67,12 +67,25 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ],
+        /*
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(1),
+          child:  Container(
+            color: Color.fromARGB(10, 0, 0, 0),
+            width: MediaQuery.of(context).size.width,
+            height: 1,
+          ),
+        ),
+        */
       ),
       drawer: CustomDrawer(
         deviceItems: _deviceItems,
       ),
-      body: Center(
-        child: _navigationOptions.elementAt(_selectedIndex),
+      body: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.background,
+        body: Center(
+          child: _navigationOptions.elementAt(_selectedIndex)
+        )
       ),
       floatingActionButton: CustomFAB(deviceItems: _deviceItems),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

@@ -9,7 +9,7 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  bool _onSelected = false;
+  bool _isOn = false;
   @override
   Widget build(BuildContext context) {
     final MaterialStateProperty<Color?> trackColor =
@@ -44,8 +44,7 @@ class _SettingsState extends State<Settings> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        elevation: 2,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop(MaterialPageRoute(
@@ -60,14 +59,14 @@ class _SettingsState extends State<Settings> {
       body: Column(
         children: [
           Switch(
-            value: _onSelected,
+            value: _isOn,
             overlayColor: overlayColor,
             trackColor: trackColor,
             onChanged: (bool value) {
               setState(() {
-                _onSelected = value;
+                _isOn = value;
               });
-            },
+            }
           ),
         ],
       ),
