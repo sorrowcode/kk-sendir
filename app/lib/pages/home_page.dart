@@ -9,10 +9,12 @@ import 'package:Remote_Control/components/custom_fab.dart';
 import 'package:Remote_Control/components/custom_drawer.dart';
 
 var selectedDevice;
+var selectedDeviceName;
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({super.key});
 
+  String title = "Choose a device";
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
@@ -20,16 +22,16 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   TextEditingController textController = TextEditingController();
 
-  late String deviceName;
-
   final List<Widget> _navigationOptions = <Widget>[
     const EmitterTab(),
     const ReceiverTab(),
   ];
 
-  List<DeviceItem> _deviceItems = [];
+  final List<DeviceItem> _deviceItems = [];
 
   int _selectedIndex = 0;
+
+  double _edgeWidth = MediaQueryData.fromView(WidgetsBinding.instance.window).size.width / 2;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -37,12 +39,20 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  String title(var title) {
+    String newTitle = 'Select a device';
+      if (title != null) {
+        newTitle = title;
+      }
+    return newTitle;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        title: const Text('HomeScreen'),
+        title: Text(title(selectedDeviceName)),
         centerTitle: true,
         actions: [
           Padding(
@@ -67,25 +77,41 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ],
-        /*
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1),
-          child:  Container(
-            color: Color.fromARGB(10, 0, 0, 0),
-            width: MediaQuery.of(context).size.width,
-            height: 1,
-          ),
-        ),
-        */
       ),
       drawer: CustomDrawer(
         deviceItems: _deviceItems,
       ),
-      body: Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.background,
-        body: Center(
-          child: _navigationOptions.elementAt(_selectedIndex)
-        )
+      drawerEdgeDragWidth: _edgeWidth,
+      endDrawerEnableOpenDragGesture: false,
+      onDrawerChanged: (isOpened) {
+        setState(() {
+          
+        });
+      },
+      body: GestureDetector(
+        onTap: () {
+          print('Tapped');
+        },
+        onHorizontalDragEnd: (details) {
+          print(details.primaryVelocity.toString());
+          setState(() {
+            if (details.primaryVelocity !> 0) {
+              _edgeWidth = MediaQuery.of(context).size.width / 2;
+              _selectedIndex = 0;
+            print('page backward');
+          }else if (details.primaryVelocity !< 0 || details.primaryVelocity == 0) {
+              _edgeWidth = 40;
+              _selectedIndex = 1;
+            print('page forward');
+          }
+          });
+        },
+        child: Scaffold(
+          backgroundColor: Theme.of(context).colorScheme.background,
+          body: Center(
+                  child: _navigationOptions.elementAt(_selectedIndex)
+                ),
+        ),
       ),
       floatingActionButton: CustomFAB(deviceItems: _deviceItems),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -96,79 +122,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
-
-/*
-FloatingActionButton(
-        onPressed: () {
-          setState(() {
-            showDialog<String>(
-                context: context,
-                builder: (BuildContext context) => Dialog(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Stack(
-                                    alignment: AlignmentDirectional.bottomCenter,
-                                    children: [
-                                      IconButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            Navigator.of(context).pop();
-                                          });
-                                        },
-                                        icon: const Icon(Icons.close),
-                                      ),
-                                      const Text('Close')
-                                    ]),
-                              ],
-                            ),
-                            TextField(
-                              controller: textController,
-                              maxLines: null,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.deny(
-                                    RegExp(r'^\s')),
-                              ],
-                              decoration: InputDecoration(
-                                hintStyle: TextStyle(
-                                    color: Theme.of(context).colorScheme.primary),
-                                hintText: 'Enter a name for the device',
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            ElevatedButton.icon(
-                                onPressed: () {
-                                  setState(() {
-                                    deviceName = textController.text;
-                                    if (deviceName == "") {
-                                    } else {
-                                      _deviceItems.add(DeviceItem(
-                                        deviceName: deviceName,
-                                      ));
-                                      Navigator.of(context).pop();
-                                      textController.clear();
-                                    }
-                                  });
-                                },
-                                label: const Text('Add Device'),
-                                icon: const Icon(Icons.add)),
-                          ],
-                        ),
-                      ),
-                    )
-                    );
-          });
-        },
-        shape: const CircleBorder(),
-        elevation: 2,
-        child: const Icon(Icons.add),
-      ),
-*/

@@ -4,7 +4,6 @@ import 'package:Remote_Control/components/device_item.dart';
 import 'package:Remote_Control/pages/home_page.dart';
 import 'package:Remote_Control/pages/settings.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class CustomDrawer extends StatefulWidget {
   CustomDrawer({
@@ -46,6 +45,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
         onTap: () {
           setState(() {
             selectedDevice = item.uuid;
+            selectedDeviceName = item.deviceName;
           });
         },
       ));
