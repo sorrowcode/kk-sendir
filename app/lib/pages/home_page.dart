@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:Remote_Control/components/custom_navigation_bar.dart';
 import 'package:Remote_Control/components/device_item.dart';

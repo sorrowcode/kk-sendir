@@ -4,7 +4,6 @@ import 'package:Remote_Control/pages/home_page.dart';
 import 'package:Remote_Control/pages/settings.dart';
 import 'package:Remote_Control/components/edit_device_dialog.dart';
 
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 
 class CustomDrawer extends StatefulWidget {
@@ -26,7 +25,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
     });
   }
 
-  void removeEntry(index) {
+  void removeEntry(int index) {
     setState(() {
       widget.deviceItems.removeAt(index);
       selectedDevice = '0';
@@ -184,6 +183,7 @@ class Device extends StatefulWidget {
 }
 
 class _DeviceState extends State<Device> {
+  int _selectedMenu = 0;
   bool isSelected() {
     if (widget.selectedDevice == widget.uuid) {
       return true;
@@ -223,7 +223,41 @@ class _DeviceState extends State<Device> {
           });
         },
         title: Text(widget.name),
-        trailing: PopupMenuButton(
+        trailing: MenuAnchor (
+          builder: (BuildContext context, MenuController controller, Widget? child) {
+            return IconButton(
+              onPressed:() {
+                if (controller.isOpen) {
+                  controller.close();
+                } else  {
+                  controller.open();
+                }
+              },
+              icon: const Icon(Icons.more_vert),
+            );
+          },
+        menuChildren: [
+          MenuItemButton(
+            onPressed: () {
+              setState(() {
+                Navigator.pop(context);
+                widget.removeEntry(widget.listIndex);
+              });
+            },
+            child: Text('Edit'),
+          ),
+          MenuItemButton(
+            child: Text('Delete'),
+          )
+        ],
+      ),
+      ),
+    );
+  }
+}
+
+/*
+PopupMenuButton(
           iconColor: Theme.of(context).colorScheme.onBackground,
           onSelected: (item) {
             setState(() {
@@ -245,7 +279,4 @@ class _DeviceState extends State<Device> {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
+*/
