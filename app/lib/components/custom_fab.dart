@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-import 'custom_dialog.dart';
+import 'add_device_dialog.dart';
 import 'package:Remote_Control/components/device_item.dart';
 
 class CustomFAB extends StatefulWidget {
-  CustomFAB({
+  const CustomFAB({
     super.key,
     required this.deviceItems,
     });
 
-  List<DeviceItem> deviceItems;
+  final List<DeviceItem> deviceItems;
 
   @override
   State<CustomFAB> createState() => _CustomFABState();
