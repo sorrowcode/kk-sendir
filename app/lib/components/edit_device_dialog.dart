@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:Remote_Control/pages/home_page.dart';
 import 'package:Remote_Control/components/device_item.dart';
 
-class CustomDialog extends StatefulWidget {
-  CustomDialog({
+class EditDeviceDialog extends StatefulWidget {
+  const EditDeviceDialog({
     super.key,
     required this.deviceItems,
     });
 
-  List<DeviceItem> deviceItems;
+  final List<DeviceItem> deviceItems;
 
   @override
-  State<CustomDialog> createState() => _CustomDigalogState();
+  State<EditDeviceDialog> createState() => _CustomDigalogState();
 }
 
-class _CustomDigalogState extends State<CustomDialog> {
+class _CustomDigalogState extends State<EditDeviceDialog> {
 
   TextEditingController textController = TextEditingController();
 
@@ -25,6 +24,7 @@ class _CustomDigalogState extends State<CustomDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -33,6 +33,7 @@ class _CustomDigalogState extends State<CustomDialog> {
             Align(
               alignment: Alignment.topRight,
               child: IconButton(
+                color: Theme.of(context).colorScheme.onBackground,
                 icon: const Icon(Icons.close),
                 onPressed: () {
                   setState(() {
@@ -55,11 +56,15 @@ class _CustomDigalogState extends State<CustomDialog> {
                 ),
                 hintText: 'Enter a name for the device'
               ),
+              textAlign: TextAlign.center,
             ),
              const SizedBox(
               height: 10.0,
              ),
              ElevatedButton.icon(
+              style: ButtonStyle(
+                backgroundColor: MaterialStatePropertyAll<Color>(Theme.of(context).colorScheme.primary),
+              ),
               onPressed: () {
                 setState(() {
                   _deviceName = textController.text;
@@ -73,7 +78,12 @@ class _CustomDigalogState extends State<CustomDialog> {
                   }
                 });
               },
-              label: const Text('Add Device'),
+              label: Text(
+                'Add Device',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
+                ),
               icon: const Icon(Icons.add),
              ),
           ],

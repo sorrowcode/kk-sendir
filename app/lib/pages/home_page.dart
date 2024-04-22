@@ -1,4 +1,3 @@
-// ignore_for_file: must_be_immutable
 import 'package:flutter/material.dart';
 
 import 'package:Remote_Control/components/custom_navigation_bar.dart';
@@ -8,9 +7,7 @@ import 'package:Remote_Control/components/tab_manager/receiver_tab.dart';
 import 'package:Remote_Control/components/custom_fab.dart';
 import 'package:Remote_Control/components/custom_drawer.dart';
 
-var selectedDevice;
-var selectedDeviceName;
-
+String selectedDevice = '0';
 class MyHomePage extends StatefulWidget {
   MyHomePage({super.key});
 
@@ -39,20 +36,26 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  String title(var title) {
-    String newTitle = 'Select a device';
-      if (title != null) {
-        newTitle = title;
+  String setTitle() {
+    late String selectedDeviceName;
+    if (selectedDevice == '0') {
+      return 'Select Device';
+    } else {
+      for (DeviceItem items in _deviceItems) {
+        if (items.uuid == selectedDevice) {
+          selectedDeviceName = items.deviceName;
+        }
       }
-    return newTitle;
+      return selectedDeviceName;
+    }
   }
-
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        title: Text(title(selectedDeviceName)),
+        title: Text(setTitle()),
         centerTitle: true,
         actions: [
           Padding(

@@ -1,17 +1,18 @@
-// ignore_for_file: must_be_immutable
 
 import 'package:Remote_Control/components/device_item.dart';
 import 'package:Remote_Control/pages/home_page.dart';
 import 'package:Remote_Control/pages/settings.dart';
+import 'package:Remote_Control/components/edit_device_dialog.dart';
+
 import 'package:flutter/material.dart';
 
 class CustomDrawer extends StatefulWidget {
-  CustomDrawer({
+  const CustomDrawer({
     super.key,
     required this.deviceItems,
   });
 
-  List<DeviceItem> deviceItems;
+  final List<DeviceItem> deviceItems;
 
   @override
   State<CustomDrawer> createState() => _CustomDrawerState();
@@ -24,12 +25,17 @@ class _CustomDrawerState extends State<CustomDrawer> {
     });
   }
 
-  void removeEntry(index) {
+  void removeEntry(int index) {
     setState(() {
       widget.deviceItems.removeAt(index);
+      selectedDevice = '0';
     });
   }
-
+  void onTap(String name, String uuid) {
+    setState(() {
+      selectedDevice = uuid;
+    });
+  }
   List<Widget> _generateDeviceList() {
     List<Widget> devices = [];
     for (DeviceItem item in widget.deviceItems) {
@@ -42,15 +48,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
         key: ValueKey(item.uuid),
         uuid: item.uuid,
         selectedDevice: selectedDevice,
+        deviceItems: widget.deviceItems,
         onTap: () {
-          setState(() {
-            selectedDevice = item.uuid;
-            selectedDeviceName = item.deviceName;
-          });
+          onTap(item.deviceName, item.uuid);
         },
       ));
     }
-
     return devices;
   }
 
@@ -59,20 +62,14 @@ class _CustomDrawerState extends State<CustomDrawer> {
       if (oldIndex < newIndex) {
         newIndex--;
       }
-      final Device = widget.deviceItems.removeAt(oldIndex);
-      widget.deviceItems.insert(newIndex, Device);
+      final device = widget.deviceItems.removeAt(oldIndex);
+      widget.deviceItems.insert(newIndex, device);
     });
   }
 
   int lenghtOfList() {
-    int length = 0;
-    for (DeviceItem items in widget.deviceItems) {
-      length++;
-    }
-    return length;
+    return widget.deviceItems.length;
   }
-
-  var CustomUUID;
 
   @override
   Widget build(BuildContext context) {
@@ -127,12 +124,17 @@ class _CustomDrawerState extends State<CustomDrawer> {
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              Theme(
-                                data: Theme.of(context),
-                                child: ElevatedButton(
-                                  onPressed: () => removeAll(),
-                                  child: const Text("Remove All"),
+                              ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStatePropertyAll(Theme.of(context).colorScheme.primary),
                                 ),
+                                onPressed: () => removeAll(),
+                                child: Text(
+                                  'Remove All',
+                                  style: TextStyle(
+                                    color: Theme.of(context).colorScheme.onPrimary,
+                                  ),
+                                  ),
                               ),
                             ],
                           ),
@@ -154,7 +156,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
 }
 
 class Device extends StatefulWidget {
-  Device({
+  const Device({
     super.key,
     required this.name,
     required this.listIndex,
@@ -162,23 +164,26 @@ class Device extends StatefulWidget {
     required this.removeAll,
     required this.onTap,
     required this.uuid,
-    this.selectedDevice,
+    required this.selectedDevice,
+    required this.deviceItems,
     this.online = false,
   });
-  void Function() removeAll;
-  void Function(int) removeEntry;
-  void Function() onTap;
-  int listIndex;
-  var selectedDevice;
+  final void Function() removeAll;
+  final void Function(int) removeEntry;
+  final void Function() onTap;
+  final int listIndex;
+  final String selectedDevice;
   final bool online;
   final String name;
-  var uuid;
+  final String uuid;
+  final List<DeviceItem> deviceItems;
 
   @override
   State<Device> createState() => _DeviceState();
 }
 
 class _DeviceState extends State<Device> {
+  int _selectedMenu = 0;
   bool isSelected() {
     if (widget.selectedDevice == widget.uuid) {
       return true;
@@ -218,12 +223,48 @@ class _DeviceState extends State<Device> {
           });
         },
         title: Text(widget.name),
-        trailing: PopupMenuButton(
+        trailing: MenuAnchor (
+          builder: (BuildContext context, MenuController controller, Widget? child) {
+            return IconButton(
+              onPressed:() {
+                if (controller.isOpen) {
+                  controller.close();
+                } else  {
+                  controller.open();
+                }
+              },
+              icon: const Icon(Icons.more_vert),
+            );
+          },
+        menuChildren: [
+          MenuItemButton(
+            onPressed: () {
+              setState(() {
+                Navigator.pop(context);
+                widget.removeEntry(widget.listIndex);
+              });
+            },
+            child: Text('Edit'),
+          ),
+          MenuItemButton(
+            child: Text('Delete'),
+          )
+        ],
+      ),
+      ),
+    );
+  }
+}
+
+/*
+PopupMenuButton(
           iconColor: Theme.of(context).colorScheme.onBackground,
           onSelected: (item) {
             setState(() {
               if (item == 0 || item == null) {
                 widget.removeEntry(widget.listIndex);
+              } else if (item == 1) {
+                EditDeviceDialog(deviceItems: widget.deviceItems);
               }
             });
           },
@@ -238,7 +279,4 @@ class _DeviceState extends State<Device> {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
+*/

@@ -9,7 +9,7 @@ ThemeData lightMode = ThemeData(
     backgroundColor: Color(0xFFd4d4d4),
   ),
   colorScheme: const ColorScheme.light(
-    outline: Color(0xFF305d44),
+    outline: Color.fromARGB(255, 85, 155, 117),
     background: Color(0xFFece8e4),
     onBackground: Color(0xFF000000),
     primary: Color(0xFF4cbdb7),
@@ -40,7 +40,7 @@ ThemeData darkMode = ThemeData(
     splashColor: Colors.transparent,
   ),
   colorScheme: const ColorScheme.dark(
-    outline: Color(0xFF0c321e),
+    outline: Color(0xFF305d44),
     background: Color(0xFF191515),
     onBackground: Color(0xFFffffff),
     primary: Color(0xFF42b3ad),
