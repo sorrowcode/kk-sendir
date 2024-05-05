@@ -9,9 +9,8 @@ import 'package:remote_control/components/custom_drawer.dart';
 
 String selectedDevice = '0';
 class MyHomePage extends StatefulWidget {
-  MyHomePage({super.key});
+  const MyHomePage({super.key});
 
-  String title = "Choose a device";
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }

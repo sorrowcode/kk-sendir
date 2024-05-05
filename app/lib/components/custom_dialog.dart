@@ -63,7 +63,7 @@ class _CustomDigalogState extends State<CustomDialog> {
             ),
             TextField(
               controller: textController,
-              maxLines: null,
+              maxLength: 50,
               inputFormatters: [
                 FilteringTextInputFormatter.deny(
                   RegExp(r'^\s')
@@ -95,21 +95,6 @@ class _CustomDigalogState extends State<CustomDialog> {
                   }
                 });
               },
-              /*
-              onPressed: () {
-                setState(() {
-                  _deviceName = textController.text;
-                  if (_deviceName == "") {
-                  }else {
-                   widget.deviceItems.add(DeviceItem(
-                    deviceName: _deviceName,
-                   ));
-                   Navigator.of(context).pop();
-                   textController.clear();
-                  }
-                });
-              },
-              */
               label: Text(
                 buttonName(),
                 style: TextStyle(

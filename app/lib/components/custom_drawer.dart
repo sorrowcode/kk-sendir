@@ -1,4 +1,6 @@
 
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
 import 'package:remote_control/components/device_item.dart';
 import 'package:remote_control/pages/home_page.dart';
 import 'package:remote_control/pages/settings.dart';
@@ -19,14 +21,14 @@ class CustomDrawer extends StatefulWidget {
 }
 
 class _CustomDrawerState extends State<CustomDrawer> {
-  void removeAll() {
+  void _removeAll() {
     setState(() {
       widget.deviceItems.clear();
       selectedDevice = '0';
     });
   }
 
-  void removeDevice(int index, String selUuid) {
+  void _removeDevice(int index, String selUuid) {
     late int deviceIndex;
     for (DeviceItem item in widget.deviceItems) {
       if (item.uuid == selectedDevice) {
@@ -40,13 +42,13 @@ class _CustomDrawerState extends State<CustomDrawer> {
       widget.deviceItems.removeAt(index);
     });
   }
-  void onTap(String name, String uuid) {
+  void _onTap(String name, String uuid) {
     setState(() {
       selectedDevice = uuid;
     });
   }
 
-  void onRename(String newName, String selUuid) {
+  void _onRename(String newName, String selUuid) {
     setState(() {
       for (DeviceItem items in widget.deviceItems) {
         if (selUuid == items.uuid) {
@@ -63,24 +65,25 @@ class _CustomDrawerState extends State<CustomDrawer> {
       devices.add(Device(
         name: item.deviceName,
         listIndex: index,
-        removeEntry: removeDevice,
-        removeAll: removeAll,
+        removeEntry: _removeDevice,
+        removeAll: _removeAll,
         key: ValueKey(item.uuid),
         uuid: item.uuid,
         selectedDevice: selectedDevice,
         deviceItems: widget.deviceItems,
+        online: false,
         onRename: (deviceName) {
-          onRename(deviceName, item.uuid);
+          _onRename(deviceName, item.uuid);
         },
         onTap: () {
-          onTap(item.deviceName, item.uuid);
+          _onTap(item.deviceName, item.uuid);
         },
       ));
     }
     return devices;
   }
 
-  void updateDeviceList(int oldIndex, int newIndex) {
+  void _updateDeviceList(int oldIndex, int newIndex) {
     setState(() {
       if (oldIndex < newIndex) {
         newIndex--;
@@ -88,10 +91,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
       final device = widget.deviceItems.removeAt(oldIndex);
       widget.deviceItems.insert(newIndex, device);
     });
-  }
-
-  int lenghtOfList() {
-    return widget.deviceItems.length;
   }
 
   @override
@@ -151,7 +150,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                 style: ButtonStyle(
                                   backgroundColor: MaterialStatePropertyAll(Theme.of(context).colorScheme.primary),
                                 ),
-                                onPressed: () => removeAll(),
+                                onPressed: () => _removeAll(),
                                 child: Text(
                                   'Remove All',
                                   style: TextStyle(
@@ -171,7 +170,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
               margin: const EdgeInsets.fromLTRB(10, 50, 10, 0),
               child: ReorderableListView(
                 buildDefaultDragHandles: true,
-                onReorder: updateDeviceList,
+                onReorder: _updateDeviceList,
                 children: _generateDeviceList(),
               ),
             )));
@@ -190,7 +189,7 @@ class Device extends StatefulWidget {
     required this.uuid,
     required this.selectedDevice,
     required this.deviceItems,
-    this.online = false,
+    required this.online,
   });
   final void Function() removeAll;
   final void Function(int, String) removeEntry;
@@ -208,7 +207,7 @@ class Device extends StatefulWidget {
 }
 
 class _DeviceState extends State<Device> {
-  bool isSelected() {
+  bool _isSelected() {
     if (widget.selectedDevice == widget.uuid) {
       return true;
     } else {
@@ -216,23 +215,23 @@ class _DeviceState extends State<Device> {
     }
   }
 
-  void changeName() {
+  void _changeName() {
     showDialog<String>(
       context: context,
       builder: (BuildContext context) => CustomDialog(deviceItems: widget.deviceItems, onTap: widget.onRename, selMode: 1,),
     );
   }
 
-  Color customColor() {
-    if (isSelected() == true) {
+  Color _customColor() {
+    if (widget.online == true) {
       return Theme.of(context).colorScheme.onPrimary;
     }else {
       return Theme.of(context).colorScheme.primary;
     }
   }
 
-  ShapeBorder border() {
-    if (isSelected() == true) {
+  ShapeBorder _border() {
+    if (widget.online == true) {
       return StadiumBorder(
         side: BorderSide(
           width: 2,
@@ -249,78 +248,94 @@ class _DeviceState extends State<Device> {
     }
   }
 
+  Widget _activeDevice() {
+    if (_isSelected() == true) {
+      return SizedBox(
+          height: _cardWidgetHeight,
+          width: 10,
+          child: const VerticalDivider(
+            width: 6,
+            thickness: 2,
+            indent: 20,
+            endIndent: 20,
+            color: Colors.white,
+          ),
+        );
+    }else {
+      return const Placeholder(
+        fallbackWidth: 0,
+        fallbackHeight: 0,
+      );
+    }
+  }
+
+  final _cardWidgetKey = GlobalKey();
+  double? _cardWidgetHeight;
+
+  void _getSize() {
+    setState(() {
+      _cardWidgetHeight = _cardWidgetKey.currentContext!.size!.height;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: isSelected() ? Theme.of(context).colorScheme.surfaceVariant : Theme.of(context).colorScheme.onSurfaceVariant,
-      shape: border(),
-      child: ListTile(
-        splashColor: Colors.transparent,
-        onTap: () {
-          setState(() {
-            widget.onTap();
-          });
-        },
-        title: Text(widget.name),
-        trailing: MenuAnchor (
-          builder: (BuildContext context, MenuController controller, Widget? child) {
-            return IconButton(
-              color: customColor(),
-              onPressed:() {
-                if (controller.isOpen) {
-                  controller.close();
-                } else  {
-                  controller.open();
-                }
+    return Row(
+      key: _cardWidgetKey,
+      children: [
+        _activeDevice(),
+        Expanded(
+          child: Card(
+            color: widget.online ? Theme.of(context).colorScheme.surfaceVariant : Theme.of(context).colorScheme.onSurfaceVariant,
+            shape: _border(),
+            child: ListTile(
+              splashColor: Colors.transparent,
+              onTap: () {
+                setState(() {
+                  widget.onTap();
+                  _getSize();
+                });
               },
-              icon: const Icon(Icons.more_vert),
-            );
-          },
-        menuChildren: [
-          MenuItemButton(
-            onPressed: () {
-              setState(() {
-                changeName();
-              });
-            },
-            child: const Text('Edit'),
+              title: Text(
+                widget.name,
+                ),
+              trailing: MenuAnchor (
+                builder: (BuildContext context, MenuController controller, Widget? child) {
+                  return IconButton(
+                    color: _customColor(),
+                    onPressed:() {
+                      if (controller.isOpen) {
+                        controller.close();
+                      } else  {
+                        controller.open();
+                      }
+                    },
+                    icon: const Icon(Icons.more_vert),
+                  );
+                },
+              menuChildren: [
+                MenuItemButton(
+                  onPressed: () {
+                    setState(() {
+                      _changeName();
+                    });
+                  },
+                  child: const Text('Edit'),
+                ),
+                MenuItemButton(
+                  onPressed: () {
+                    setState(() {
+                      widget.removeEntry(widget.listIndex, widget.uuid);
+                    });
+                  },
+                  child: const Text('Delete'),
+                ),
+              ],
+            ),
+            ),
           ),
-          MenuItemButton(
-            onPressed: () {
-              setState(() {
-                widget.removeEntry(widget.listIndex, widget.uuid);
-              });
-            },
-            child: const Text('Delete'),
-          )
-        ],
-      ),
-      ),
+        ),
+      ],
     );
   }
 }
-
-/*
-PopupMenuButton(
-          iconColor: Theme.of(context).colorScheme.onBackground,
-          onSelected: (item) {
-            setState(() {
-              if (item == 0 || item == null) {
-                widget.removeEntry(widget.listIndex);
-              } else if (item == 1) {
-                EditDeviceDialog(deviceItems: widget.deviceItems);
-              }
-            });
-          },
-          itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-            const PopupMenuItem(
-              value: 1,
-              child: Text('Edit'),
-            ),
-            const PopupMenuItem(
-              value: 0,
-              child: Text('Delete'),
-            ),
-          ],
-        ),
-*/
