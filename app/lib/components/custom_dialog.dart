@@ -1,26 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:Remote_Control/components/device_item.dart';
+import 'package:remote_control/components/device_item.dart';
 
-class EditDeviceDialog extends StatefulWidget {
-  const EditDeviceDialog({
+class CustomDialog extends StatefulWidget {
+  const CustomDialog({
     super.key,
     required this.deviceItems,
+    required this.onTap,
+    required this.selMode,
     });
 
   final List<DeviceItem> deviceItems;
+  final void Function(String) onTap;
+  final int selMode;
 
   @override
-  State<EditDeviceDialog> createState() => _CustomDigalogState();
+  State<CustomDialog> createState() => _CustomDigalogState();
 }
 
-class _CustomDigalogState extends State<EditDeviceDialog> {
+class _CustomDigalogState extends State<CustomDialog> {
 
   TextEditingController textController = TextEditingController();
 
   late String _deviceName;
 
+  String buttonName() {
+    if (widget.selMode == 0) {
+      return "Add Device";
+    }else {
+      return "Edit Name";
+    }
+  }
+  
+  IconData buttonIcon() {
+    if (widget.selMode == 0) {
+      return Icons.add;
+    }else {
+      return Icons.edit;
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -68,6 +87,18 @@ class _CustomDigalogState extends State<EditDeviceDialog> {
               onPressed: () {
                 setState(() {
                   _deviceName = textController.text;
+                  if (_deviceName == "") {}
+                  else {
+                    widget.onTap(_deviceName);
+                    Navigator.of(context).pop();
+                    textController.clear();
+                  }
+                });
+              },
+              /*
+              onPressed: () {
+                setState(() {
+                  _deviceName = textController.text;
                   if (_deviceName == "") {
                   }else {
                    widget.deviceItems.add(DeviceItem(
@@ -78,13 +109,17 @@ class _CustomDigalogState extends State<EditDeviceDialog> {
                   }
                 });
               },
+              */
               label: Text(
-                'Add Device',
+                buttonName(),
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onPrimary,
                 ),
                 ),
-              icon: const Icon(Icons.add),
+              icon: Icon(
+                buttonIcon(), 
+                color: Theme.of(context).colorScheme.onPrimary
+              ),
              ),
           ],
         ),

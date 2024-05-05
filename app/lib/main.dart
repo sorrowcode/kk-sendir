@@ -1,4 +1,4 @@
-import 'package:Remote_Control/app.dart';
+import 'package:remote_control/app.dart';
 import 'package:flutter/material.dart';
 
 void main() {

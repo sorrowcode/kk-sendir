@@ -1,6 +1,6 @@
-import 'package:Remote_Control/pages/home_page.dart';
-import 'package:Remote_Control/pages/settings.dart';
-import 'package:Remote_Control/theme/theme.dart';
+import 'package:remote_control/pages/home_page.dart';
+import 'package:remote_control/pages/settings.dart';
+import 'package:remote_control/theme/theme.dart';
 import 'package:flutter/material.dart';
 
 class MyApp extends StatelessWidget {
@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      themeMode: ThemeMode.light,
+      themeMode: ThemeMode.system,
       theme: lightMode,
       darkTheme: darkMode,
       routes: {

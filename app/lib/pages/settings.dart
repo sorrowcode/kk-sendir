@@ -1,4 +1,4 @@
-import 'package:Remote_Control/pages/home_page.dart';
+import 'package:remote_control/pages/home_page.dart';
 import 'package:flutter/material.dart';
 
 class Settings extends StatefulWidget {

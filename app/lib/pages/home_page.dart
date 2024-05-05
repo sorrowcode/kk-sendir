@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'package:Remote_Control/components/custom_navigation_bar.dart';
-import 'package:Remote_Control/components/device_item.dart';
-import 'package:Remote_Control/components/tab_manager/emitter_tab.dart';
-import 'package:Remote_Control/components/tab_manager/receiver_tab.dart';
-import 'package:Remote_Control/components/custom_fab.dart';
-import 'package:Remote_Control/components/custom_drawer.dart';
+import 'package:remote_control/components/custom_navigation_bar.dart';
+import 'package:remote_control/components/device_item.dart';
+import 'package:remote_control/components/tab_manager/emitter_tab.dart';
+import 'package:remote_control/components/tab_manager/receiver_tab.dart';
+import 'package:remote_control/components/custom_fab.dart';
+import 'package:remote_control/components/custom_drawer.dart';
 
 String selectedDevice = '0';
 class MyHomePage extends StatefulWidget {
@@ -28,12 +28,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
   int _selectedIndex = 0;
 
-  double _edgeWidth = MediaQueryData.fromView(WidgetsBinding.instance.window).size.width / 2;
-
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  void onAddDevice(String deviceName) {
+    _deviceItems.add(DeviceItem(
+      deviceName: deviceName,
+    ));
   }
 
   String setTitle() {
@@ -50,9 +54,12 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
  
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         title: Text(setTitle()),
@@ -84,29 +91,21 @@ class _MyHomePageState extends State<MyHomePage> {
       drawer: CustomDrawer(
         deviceItems: _deviceItems,
       ),
-      drawerEdgeDragWidth: _edgeWidth,
+      drawerEdgeDragWidth: 40,
       endDrawerEnableOpenDragGesture: false,
       onDrawerChanged: (isOpened) {
-        setState(() {
-          
-        });
+        setState((){});
       },
       body: GestureDetector(
-        onTap: () {
-          print('Tapped');
-        },
         onHorizontalDragEnd: (details) {
-          print(details.primaryVelocity.toString());
           setState(() {
-            if (details.primaryVelocity !> 0) {
-              _edgeWidth = MediaQuery.of(context).size.width / 2;
+            if (details.primaryVelocity !> 11 && _selectedIndex == 1) {
               _selectedIndex = 0;
-            print('page backward');
-          }else if (details.primaryVelocity !< 0 || details.primaryVelocity == 0) {
-              _edgeWidth = 40;
+            }else if (details.primaryVelocity !< -11 && _selectedIndex == 0) {
               _selectedIndex = 1;
-            print('page forward');
-          }
+            }else {
+              scaffoldKey.currentState!.openDrawer();
+            }
           });
         },
         child: Scaffold(
@@ -116,7 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
         ),
       ),
-      floatingActionButton: CustomFAB(deviceItems: _deviceItems),
+      floatingActionButton: CustomFAB(deviceItems: _deviceItems, onTap: onAddDevice, selMode: 0,),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: CustomNavigationBar(
         selectedIndex: _selectedIndex,

@@ -1,8 +1,8 @@
 
-import 'package:Remote_Control/components/device_item.dart';
-import 'package:Remote_Control/pages/home_page.dart';
-import 'package:Remote_Control/pages/settings.dart';
-import 'package:Remote_Control/components/edit_device_dialog.dart';
+import 'package:remote_control/components/device_item.dart';
+import 'package:remote_control/pages/home_page.dart';
+import 'package:remote_control/pages/settings.dart';
+import 'package:remote_control/components/custom_dialog.dart';
 
 import 'package:flutter/material.dart';
 
@@ -22,13 +22,22 @@ class _CustomDrawerState extends State<CustomDrawer> {
   void removeAll() {
     setState(() {
       widget.deviceItems.clear();
+      selectedDevice = '0';
     });
   }
 
-  void removeEntry(int index) {
+  void removeDevice(int index, String selUuid) {
+    late int deviceIndex;
+    for (DeviceItem item in widget.deviceItems) {
+      if (item.uuid == selectedDevice) {
+        deviceIndex = widget.deviceItems.indexOf(item);
+        if (index == deviceIndex) {
+          selectedDevice = '0';
+        }
+      }
+    }
     setState(() {
       widget.deviceItems.removeAt(index);
-      selectedDevice = '0';
     });
   }
   void onTap(String name, String uuid) {
@@ -36,6 +45,17 @@ class _CustomDrawerState extends State<CustomDrawer> {
       selectedDevice = uuid;
     });
   }
+
+  void onRename(String newName, String selUuid) {
+    setState(() {
+      for (DeviceItem items in widget.deviceItems) {
+        if (selUuid == items.uuid) {
+          items.deviceName = newName;
+        }
+      }
+    });
+  }
+
   List<Widget> _generateDeviceList() {
     List<Widget> devices = [];
     for (DeviceItem item in widget.deviceItems) {
@@ -43,12 +63,15 @@ class _CustomDrawerState extends State<CustomDrawer> {
       devices.add(Device(
         name: item.deviceName,
         listIndex: index,
-        removeEntry: removeEntry,
+        removeEntry: removeDevice,
         removeAll: removeAll,
         key: ValueKey(item.uuid),
         uuid: item.uuid,
         selectedDevice: selectedDevice,
         deviceItems: widget.deviceItems,
+        onRename: (deviceName) {
+          onRename(deviceName, item.uuid);
+        },
         onTap: () {
           onTap(item.deviceName, item.uuid);
         },
@@ -163,14 +186,16 @@ class Device extends StatefulWidget {
     required this.removeEntry,
     required this.removeAll,
     required this.onTap,
+    required this.onRename,
     required this.uuid,
     required this.selectedDevice,
     required this.deviceItems,
     this.online = false,
   });
   final void Function() removeAll;
-  final void Function(int) removeEntry;
+  final void Function(int, String) removeEntry;
   final void Function() onTap;
+  final void Function(String) onRename;
   final int listIndex;
   final String selectedDevice;
   final bool online;
@@ -183,12 +208,26 @@ class Device extends StatefulWidget {
 }
 
 class _DeviceState extends State<Device> {
-  int _selectedMenu = 0;
   bool isSelected() {
     if (widget.selectedDevice == widget.uuid) {
       return true;
     } else {
       return false;
+    }
+  }
+
+  void changeName() {
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => CustomDialog(deviceItems: widget.deviceItems, onTap: widget.onRename, selMode: 1,),
+    );
+  }
+
+  Color customColor() {
+    if (isSelected() == true) {
+      return Theme.of(context).colorScheme.onPrimary;
+    }else {
+      return Theme.of(context).colorScheme.primary;
     }
   }
 
@@ -226,6 +265,7 @@ class _DeviceState extends State<Device> {
         trailing: MenuAnchor (
           builder: (BuildContext context, MenuController controller, Widget? child) {
             return IconButton(
+              color: customColor(),
               onPressed:() {
                 if (controller.isOpen) {
                   controller.close();
@@ -240,14 +280,18 @@ class _DeviceState extends State<Device> {
           MenuItemButton(
             onPressed: () {
               setState(() {
-                Navigator.pop(context);
-                widget.removeEntry(widget.listIndex);
+                changeName();
               });
             },
-            child: Text('Edit'),
+            child: const Text('Edit'),
           ),
           MenuItemButton(
-            child: Text('Delete'),
+            onPressed: () {
+              setState(() {
+                widget.removeEntry(widget.listIndex, widget.uuid);
+              });
+            },
+            child: const Text('Delete'),
           )
         ],
       ),
