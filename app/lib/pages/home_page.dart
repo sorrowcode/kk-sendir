@@ -33,13 +33,13 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void onAddDevice(String deviceName) {
+  void _onAddDevice(String deviceName) {
     _deviceItems.add(DeviceItem(
       deviceName: deviceName,
     ));
   }
 
-  String setTitle() {
+  String _setTitle() {
     late String selectedDeviceName;
     if (selectedDevice == '0') {
       return 'Select Device';
@@ -53,15 +53,15 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
  
-  final scaffoldKey = GlobalKey<ScaffoldState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: scaffoldKey,
+      key: _scaffoldKey,
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        title: Text(setTitle()),
+        title: Text(_setTitle()),
         centerTitle: true,
         actions: [
           Padding(
@@ -102,19 +102,19 @@ class _MyHomePageState extends State<MyHomePage> {
               _selectedIndex = 0;
             }else if (details.primaryVelocity !< -11 && _selectedIndex == 0) {
               _selectedIndex = 1;
-            }else {
-              scaffoldKey.currentState!.openDrawer();
+            }else if (details.primaryVelocity !< -11 && _selectedIndex == 1) {
+              _scaffoldKey.currentState!.openDrawer();
+            }else if (details.primaryVelocity !> 11 && _selectedIndex == 0) {
+              _scaffoldKey.currentState!.openDrawer();
             }
           });
         },
         child: Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,
-          body: Center(
-                  child: _navigationOptions.elementAt(_selectedIndex)
-                ),
+          body: _navigationOptions.elementAt(_selectedIndex),
         ),
       ),
-      floatingActionButton: CustomFAB(deviceItems: _deviceItems, onTap: onAddDevice, selMode: 0,),
+      floatingActionButton: CustomFAB(deviceItems: _deviceItems, onTap: _onAddDevice, selMode: 0,),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: CustomNavigationBar(
         selectedIndex: _selectedIndex,

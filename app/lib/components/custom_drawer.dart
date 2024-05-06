@@ -1,6 +1,4 @@
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/widgets.dart';
 import 'package:remote_control/components/device_item.dart';
 import 'package:remote_control/pages/home_page.dart';
 import 'package:remote_control/pages/settings.dart';
@@ -250,10 +248,10 @@ class _DeviceState extends State<Device> {
 
   Widget _activeDevice() {
     if (_isSelected() == true) {
-      return SizedBox(
-          height: _cardWidgetHeight,
+      return const SizedBox(
+          height: 70,
           width: 10,
-          child: const VerticalDivider(
+          child: VerticalDivider(
             width: 6,
             thickness: 2,
             indent: 20,
@@ -269,6 +267,7 @@ class _DeviceState extends State<Device> {
     }
   }
 
+  /*
   final _cardWidgetKey = GlobalKey();
   double? _cardWidgetHeight;
 
@@ -277,11 +276,11 @@ class _DeviceState extends State<Device> {
       _cardWidgetHeight = _cardWidgetKey.currentContext!.size!.height;
     });
   }
+  */
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      key: _cardWidgetKey,
       children: [
         _activeDevice(),
         Expanded(
@@ -293,7 +292,6 @@ class _DeviceState extends State<Device> {
               onTap: () {
                 setState(() {
                   widget.onTap();
-                  _getSize();
                 });
               },
               title: Text(

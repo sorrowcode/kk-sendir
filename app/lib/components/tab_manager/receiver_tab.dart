@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:remote_control/pages/home_page.dart';
 
 class ReceiverTab extends StatefulWidget {
   const ReceiverTab({super.key});
@@ -10,6 +11,13 @@ class ReceiverTab extends StatefulWidget {
 class _ReceiverTabState extends State<ReceiverTab> {
   @override
   Widget build(BuildContext context) {
-    return const Text('Receiver');
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          Text(selectedDevice),
+        ],
+      ),
+    );
   }
 }
