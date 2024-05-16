@@ -1,5 +1,6 @@
 import 'package:remote_control/pages/home_page.dart';
 import 'package:remote_control/pages/settings.dart';
+import 'package:remote_control/components/tab_manager/add_device_tab.dart';
 import 'package:remote_control/theme/theme.dart';
 import 'package:flutter/material.dart';
 
@@ -17,6 +18,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => MyHomePage(),
         '/settings': (context) => const Settings(),
+        '/addDevices':(context) => const AddDevicesTab(deviceItems: [],),
       },
     );
   }

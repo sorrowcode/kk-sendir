@@ -6,7 +6,7 @@ class DeviceItem {
   DeviceItem({
     required this.deviceName,
   });
-  DeviceItem.debug () {
+  DeviceItem.debug() {
     deviceName = uuid;
   }
 }

@@ -8,6 +8,7 @@ import 'package:remote_control/components/custom_fab.dart';
 import 'package:remote_control/components/custom_drawer.dart';
 
 String selectedDevice = '0';
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
@@ -52,7 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
       return selectedDeviceName;
     }
   }
- 
+
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -93,18 +94,18 @@ class _MyHomePageState extends State<MyHomePage> {
       drawerEdgeDragWidth: 40,
       endDrawerEnableOpenDragGesture: false,
       onDrawerChanged: (isOpened) {
-        setState((){});
+        setState(() {});
       },
       body: GestureDetector(
         onHorizontalDragEnd: (details) {
           setState(() {
-            if (details.primaryVelocity !> 11 && _selectedIndex == 1) {
+            if (details.primaryVelocity! > 11 && _selectedIndex == 1) {
               _selectedIndex = 0;
-            }else if (details.primaryVelocity !< -11 && _selectedIndex == 0) {
+            } else if (details.primaryVelocity! < -11 && _selectedIndex == 0) {
               _selectedIndex = 1;
-            }else if (details.primaryVelocity !< -11 && _selectedIndex == 1) {
+            } else if (details.primaryVelocity! < -11 && _selectedIndex == 1) {
               _scaffoldKey.currentState!.openDrawer();
-            }else if (details.primaryVelocity !> 11 && _selectedIndex == 0) {
+            } else if (details.primaryVelocity! > 11 && _selectedIndex == 0) {
               _scaffoldKey.currentState!.openDrawer();
             }
           });
@@ -114,7 +115,11 @@ class _MyHomePageState extends State<MyHomePage> {
           body: _navigationOptions.elementAt(_selectedIndex),
         ),
       ),
-      floatingActionButton: CustomFAB(deviceItems: _deviceItems, onTap: _onAddDevice, selMode: 0,),
+      floatingActionButton: CustomFAB(
+        deviceItems: _deviceItems,
+        onTap: _onAddDevice,
+        selMode: 0,
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: CustomNavigationBar(
         selectedIndex: _selectedIndex,

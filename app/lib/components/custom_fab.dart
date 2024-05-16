@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:remote_control/components/tab_manager/add_device_tab.dart';
 
 import 'custom_dialog.dart';
 import 'package:remote_control/components/device_item.dart';
@@ -9,7 +10,7 @@ class CustomFAB extends StatefulWidget {
     required this.deviceItems,
     required this.onTap,
     required this.selMode,
-    });
+  });
 
   final List<DeviceItem> deviceItems;
   final void Function(String) onTap;
@@ -25,36 +26,46 @@ class _CustomFABState extends State<CustomFAB> {
     return FloatingActionButton(
       onPressed: () {
         showBottomSheet(
-            context: context,
-            constraints: BoxConstraints(
-              minWidth: MediaQuery.of(context).size.width,
-            ),
-            builder: (context) => SizedBox(
-              height: MediaQuery.of(context).size.height / 5,
-              child: Padding(
-                padding: EdgeInsets.only(top: 30),
-                child: Column(
-                 children: [
-                    TextButton(
-                      onPressed: () {
-                        setState(() {
-                          showDialog<String>(
+          context: context,
+          constraints: BoxConstraints(
+            minWidth: MediaQuery.of(context).size.width,
+          ),
+          builder: (context) => SizedBox(
+            height: MediaQuery.of(context).size.height / 5,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 30),
+              child: Column(
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      setState(() {
+                        Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => AddDevicesTab(deviceItems: widget.deviceItems,),
+                            ));
+                        /*
+                        showDialog<String>(
                             context: context,
-                            builder: (BuildContext context) => CustomDialog(deviceItems: widget.deviceItems, onTap: widget.onTap, selMode: widget.selMode)
-                          );
-                        });
-                      },
-                      child: Text('Add Device'),
-                      ),
-                    TextButton(
-                      onPressed: null,
-                      child: Text('Add Remote'),
-                   )
-                 ],
-               ),
+                            builder: (BuildContext context) => CustomDialog(
+                                deviceItems: widget.deviceItems,
+                                onTap: widget.onTap,
+                                selMode: widget.selMode
+                                )
+                        );
+                        */
+                      });
+
+                    },
+                    child: const Text('Add Device'),
+                  ),
+                  const TextButton(
+                    onPressed: null,
+                    child: Text('Add Remote'),
+                  )
+                ],
               ),
-           ),
-          );
+            ),
+          ),
+        );
         /*
         showDialog<String>(
           context: context,

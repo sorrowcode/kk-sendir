@@ -59,15 +59,14 @@ class _SettingsState extends State<Settings> {
       body: Column(
         children: [
           Switch(
-            value: _isOn,
-            overlayColor: overlayColor,
-            trackColor: trackColor,
-            onChanged: (bool value) {
-              setState(() {
-                _isOn = value;
-              });
-            }
-          ),
+              value: _isOn,
+              overlayColor: overlayColor,
+              trackColor: trackColor,
+              onChanged: (bool value) {
+                setState(() {
+                  _isOn = value;
+                });
+              }),
         ],
       ),
     );

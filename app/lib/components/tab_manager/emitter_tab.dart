@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 import 'package:remote_control/pages/home_page.dart';
 
-
 class EmitterTab extends StatefulWidget {
   const EmitterTab({super.key});
 
@@ -13,14 +12,12 @@ class EmitterTab extends StatefulWidget {
 }
 
 class _EmitterTabState extends State<EmitterTab> {
-  
   final List<DropdownMenuEntry> _remotes = [
     DropdownMenuEntry(value: 0, label: 'Hello'),
     DropdownMenuEntry(value: 1, label: 'dadas'),
   ];
 
   int _selectedRemote = 0;
-
 
   @override
   Widget build(BuildContext context) {

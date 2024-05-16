@@ -1,4 +1,3 @@
-
 import 'package:remote_control/components/device_item.dart';
 import 'package:remote_control/pages/home_page.dart';
 import 'package:remote_control/pages/settings.dart';
@@ -40,6 +39,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
       widget.deviceItems.removeAt(index);
     });
   }
+
   void _onTap(String name, String uuid) {
     setState(() {
       selectedDevice = uuid;
@@ -97,70 +97,70 @@ class _CustomDrawerState extends State<CustomDrawer> {
         width: MediaQuery.of(context).size.width * 0.85,
         child: Scaffold(
             appBar: PreferredSize(
-              preferredSize: Size(
-                MediaQuery.of(context).size.width,
-                MediaQuery.of(context).size.height / 6
-                ),
+              preferredSize: Size(MediaQuery.of(context).size.width,
+                  MediaQuery.of(context).size.height / 6),
               child: Container(
                 color: Theme.of(context).appBarTheme.backgroundColor,
                 child: Padding(
                   padding: const EdgeInsets.only(top: 20),
                   child: AppBar(
-                      leading: Row(
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              setState(() {
-                                widget.deviceItems.add(DeviceItem.debug());
-                              });
-                            },
-                            icon: const Icon(Icons.add),
-                          ),
-                        ],
-                      ),
-                      title: const Text(
-                        'Devices',
-                        style: TextStyle(fontSize: 40.0),
-                      ),
-                      actions: [
+                    leading: Row(
+                      children: [
                         IconButton(
-                          color: Theme.of(context).colorScheme.onBackground,
-                          iconSize: 30,
                           onPressed: () {
                             setState(() {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const Settings(),
-                              ));
+                              widget.deviceItems.add(DeviceItem.debug());
                             });
                           },
-                          icon: const Icon(Icons.settings),
+                          icon: const Icon(Icons.add),
                         ),
                       ],
-                      bottom: PreferredSize(
-                        preferredSize: const Size.fromHeight(1),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              ElevatedButton(
-                                style: ButtonStyle(
-                                  backgroundColor: MaterialStatePropertyAll(Theme.of(context).colorScheme.primary),
-                                ),
-                                onPressed: () => _removeAll(),
-                                child: Text(
-                                  'Remove All',
-                                  style: TextStyle(
-                                    color: Theme.of(context).colorScheme.onPrimary,
-                                  ),
-                                  ),
+                    ),
+                    title: const Text(
+                      'Devices',
+                      style: TextStyle(fontSize: 40.0),
+                    ),
+                    actions: [
+                      IconButton(
+                        color: Theme.of(context).colorScheme.onBackground,
+                        iconSize: 30,
+                        onPressed: () {
+                          setState(() {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const Settings(),
+                            ));
+                          });
+                        },
+                        icon: const Icon(Icons.settings),
+                      ),
+                    ],
+                    bottom: PreferredSize(
+                      preferredSize: const Size.fromHeight(1),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            ElevatedButton(
+                              style: ButtonStyle(
+                                backgroundColor: MaterialStatePropertyAll(
+                                    Theme.of(context).colorScheme.primary),
                               ),
-                            ],
-                          ),
+                              onPressed: () => _removeAll(),
+                              child: Text(
+                                'Remove All',
+                                style: TextStyle(
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
+                  ),
                 ),
               ),
             ),
@@ -216,14 +216,18 @@ class _DeviceState extends State<Device> {
   void _changeName() {
     showDialog<String>(
       context: context,
-      builder: (BuildContext context) => CustomDialog(deviceItems: widget.deviceItems, onTap: widget.onRename, selMode: 1,),
+      builder: (BuildContext context) => CustomDialog(
+        deviceItems: widget.deviceItems,
+        onTap: widget.onRename,
+        selMode: 1,
+      ),
     );
   }
 
   Color _customColor() {
     if (widget.online == true) {
       return Theme.of(context).colorScheme.onPrimary;
-    }else {
+    } else {
       return Theme.of(context).colorScheme.primary;
     }
   }
@@ -231,35 +235,33 @@ class _DeviceState extends State<Device> {
   ShapeBorder _border() {
     if (widget.online == true) {
       return StadiumBorder(
-        side: BorderSide(
-          width: 2,
-          color: Theme.of(context).colorScheme.outline,
-        )
-      );
+          side: BorderSide(
+        width: 2,
+        color: Theme.of(context).colorScheme.outline,
+      ));
     } else {
       return const StadiumBorder(
-        side: BorderSide(
-          width: 0,
-          color: Colors.transparent,
-        )
-      );
+          side: BorderSide(
+        width: 0,
+        color: Colors.transparent,
+      ));
     }
   }
 
   Widget _activeDevice() {
     if (_isSelected() == true) {
       return const SizedBox(
-          height: 70,
-          width: 10,
-          child: VerticalDivider(
-            width: 6,
-            thickness: 2,
-            indent: 20,
-            endIndent: 20,
-            color: Colors.white,
-          ),
-        );
-    }else {
+        height: 70,
+        width: 10,
+        child: VerticalDivider(
+          width: 6,
+          thickness: 2,
+          indent: 20,
+          endIndent: 20,
+          color: Colors.white,
+        ),
+      );
+    } else {
       return const Placeholder(
         fallbackWidth: 0,
         fallbackHeight: 0,
@@ -285,7 +287,9 @@ class _DeviceState extends State<Device> {
         _activeDevice(),
         Expanded(
           child: Card(
-            color: widget.online ? Theme.of(context).colorScheme.surfaceVariant : Theme.of(context).colorScheme.onSurfaceVariant,
+            color: widget.online
+                ? Theme.of(context).colorScheme.surfaceVariant
+                : Theme.of(context).colorScheme.onSurfaceVariant,
             shape: _border(),
             child: ListTile(
               splashColor: Colors.transparent,
@@ -296,40 +300,41 @@ class _DeviceState extends State<Device> {
               },
               title: Text(
                 widget.name,
-                ),
-              trailing: MenuAnchor (
-                builder: (BuildContext context, MenuController controller, Widget? child) {
+              ),
+              trailing: MenuAnchor(
+                builder: (BuildContext context, MenuController controller,
+                    Widget? child) {
                   return IconButton(
                     color: _customColor(),
-                    onPressed:() {
+                    onPressed: () {
                       if (controller.isOpen) {
                         controller.close();
-                      } else  {
+                      } else {
                         controller.open();
                       }
                     },
                     icon: const Icon(Icons.more_vert),
                   );
                 },
-              menuChildren: [
-                MenuItemButton(
-                  onPressed: () {
-                    setState(() {
-                      _changeName();
-                    });
-                  },
-                  child: const Text('Edit'),
-                ),
-                MenuItemButton(
-                  onPressed: () {
-                    setState(() {
-                      widget.removeEntry(widget.listIndex, widget.uuid);
-                    });
-                  },
-                  child: const Text('Delete'),
-                ),
-              ],
-            ),
+                menuChildren: [
+                  MenuItemButton(
+                    onPressed: () {
+                      setState(() {
+                        _changeName();
+                      });
+                    },
+                    child: const Text('Edit'),
+                  ),
+                  MenuItemButton(
+                    onPressed: () {
+                      setState(() {
+                        widget.removeEntry(widget.listIndex, widget.uuid);
+                      });
+                    },
+                    child: const Text('Delete'),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

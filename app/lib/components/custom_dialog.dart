@@ -9,7 +9,7 @@ class CustomDialog extends StatefulWidget {
     required this.deviceItems,
     required this.onTap,
     required this.selMode,
-    });
+  });
 
   final List<DeviceItem> deviceItems;
   final void Function(String) onTap;
@@ -20,7 +20,6 @@ class CustomDialog extends StatefulWidget {
 }
 
 class _CustomDigalogState extends State<CustomDialog> {
-
   TextEditingController textController = TextEditingController();
 
   late String _deviceName;
@@ -28,18 +27,19 @@ class _CustomDigalogState extends State<CustomDialog> {
   String buttonName() {
     if (widget.selMode == 0) {
       return "Add Device";
-    }else {
+    } else {
       return "Edit Name";
     }
   }
-  
+
   IconData buttonIcon() {
     if (widget.selMode == 0) {
       return Icons.add;
-    }else {
+    } else {
       return Icons.edit;
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -50,45 +50,42 @@ class _CustomDigalogState extends State<CustomDialog> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Align(
-              alignment: Alignment.topRight,
-              child: IconButton(
-                color: Theme.of(context).colorScheme.onBackground,
-                icon: const Icon(Icons.close),
-                onPressed: () {
-                  setState(() {
-                    Navigator.of(context).pop();
-                  });
-                },
-              )
-            ),
+                alignment: Alignment.topRight,
+                child: IconButton(
+                  color: Theme.of(context).colorScheme.onBackground,
+                  icon: const Icon(Icons.close),
+                  onPressed: () {
+                    setState(() {
+                      Navigator.of(context).pop();
+                    });
+                  },
+                )),
             TextField(
               controller: textController,
               maxLength: 50,
               inputFormatters: [
-                FilteringTextInputFormatter.deny(
-                  RegExp(r'^\s')
-                )
+                FilteringTextInputFormatter.deny(RegExp(r'^\s'))
               ],
               decoration: InputDecoration(
-                hintStyle: TextStyle(
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-                hintText: 'Enter a name for the device'
-              ),
+                  hintStyle: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  hintText: 'Enter a name for the device'),
               textAlign: TextAlign.center,
             ),
-             const SizedBox(
+            const SizedBox(
               height: 10.0,
-             ),
-             ElevatedButton.icon(
+            ),
+            ElevatedButton.icon(
               style: ButtonStyle(
-                backgroundColor: MaterialStatePropertyAll<Color>(Theme.of(context).colorScheme.primary),
+                backgroundColor: MaterialStatePropertyAll<Color>(
+                    Theme.of(context).colorScheme.primary),
               ),
               onPressed: () {
                 setState(() {
                   _deviceName = textController.text;
-                  if (_deviceName == "") {}
-                  else {
+                  if (_deviceName == "") {
+                  } else {
                     widget.onTap(_deviceName);
                     Navigator.of(context).pop();
                     textController.clear();
@@ -100,12 +97,10 @@ class _CustomDigalogState extends State<CustomDialog> {
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onPrimary,
                 ),
-                ),
-              icon: Icon(
-                buttonIcon(), 
-                color: Theme.of(context).colorScheme.onPrimary
               ),
-             ),
+              icon: Icon(buttonIcon(),
+                  color: Theme.of(context).colorScheme.onPrimary),
+            ),
           ],
         ),
       ),
