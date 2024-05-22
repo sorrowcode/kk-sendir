@@ -1,11 +1,13 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'package:remote_control/components/device_item.dart';
 import 'package:remote_control/pages/home_page.dart';
-import 'package:remote_control/components/ble_controller.dart';
+import 'bluetooth_off_screen.dart';
+import '../ble_controller.dart';
 
-import 'package:flutter_blue/flutter_blue.dart';
-import 'package:get/get.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 
 class AddDevicesTab extends StatefulWidget {
   const AddDevicesTab({
@@ -20,11 +22,35 @@ class AddDevicesTab extends StatefulWidget {
 }
 
 class _AddDevicesTabState extends State<AddDevicesTab> {
+  BluetoothAdapterState _adapterState = BluetoothAdapterState.unknown;
 
+  late StreamSubscription<BluetoothAdapterState> _adapterStateStateSubscription;
 
+  @override
+  void initState() {
+    super.initState();
+    _adapterStateStateSubscription = FlutterBluePlus.adapterState.listen((state) {
+      _adapterState = state;
+      if (mounted) {
+        setState(() {});
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _adapterStateStateSubscription.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    return _adapterState == BluetoothAdapterState.on
+        ? const ScanScreen()
+        : BluetoothOffScreen(adapterState: _adapterState);
+  
+
+    /*
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
@@ -81,11 +107,11 @@ class _AddDevicesTabState extends State<AddDevicesTab> {
                           return const Center(child: Text("No Device Found"),);
                         }
                       }),
-                  const SizedBox(height: 10,),
-                  ElevatedButton(onPressed: ()  async {
-                    controller.scanDevices();
-                    // await controller.disconnectDevice();
-                  }, child: const Text("SCAN")),
+                                    const SizedBox(height: 10,),
+                                    ElevatedButton(onPressed: ()  async {
+                                      controller.scanDevices();
+                                      // await controller.disconnectDevice();
+                                    }, child: const Text("SCAN"))
                 ],
               ),
             );
@@ -115,6 +141,113 @@ class _AddDevicesTabState extends State<AddDevicesTab> {
           ],
         ),
       ),
+    );
+
+    */
+  }
+}
+
+
+class ScanScreen extends StatefulWidget {
+  const ScanScreen({super.key});
+
+  @override
+  State<ScanScreen> createState() => _ScanScreenState();
+}
+
+class _ScanScreenState extends State<ScanScreen> {
+
+  
+
+  @override
+  void initState() {
+    super.initState();
+
+    BleController().scanDevices();
+  }
+
+  @override
+  void dispose() {
+    BleController().stopScan();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop(MaterialPageRoute(
+              builder: (context) => const MyHomePage(),
+            ));
+          },
+          icon: const Icon(Icons.arrow_back),
+        ),
+        title: const Text('Add Device'),
+        centerTitle: true,
+      ),
+      body: GetBuilder<BleController>(
+              init: BleController(),
+              builder: (BleController controller)
+              {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [            
+            StreamBuilder<List<ScanResult>>(
+                stream: controller.scanResults,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Expanded(
+                      child: Column(
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text('Scanning for devices...'),
+                          ),
+                          Expanded(
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: snapshot.data!.length,
+                              itemBuilder: (context, index) {
+                                final data = snapshot.data![index];
+                                return Card(
+                                  elevation: 2,
+                                  child: ListTile(
+                                    title: Text(
+                                      data.device.platformName == "" ? 'No DeviceName' : data.device.platformName,
+                                    ),
+                                    subtitle: Text(
+                                      data.device.remoteId.str,
+                                      style: TextStyle(
+                                        color: Theme.of(context).colorScheme.primary,
+                                      ),
+                                    ),
+                                    onTap: ()=> controller.connectToDevice(data.device),
+                                  ),
+                                );
+                              }),
+                          ),
+                        ]
+                      ),
+                    );
+                  }else{
+                    return const Center(child: Text("No Device Found"),);
+                  }
+                }),
+                const SizedBox(height: 10,),
+                ElevatedButton(onPressed: ()  async {
+                  controller.stopScan();
+                  controller.scanDevices();
+                }, 
+                child: const Text("SCAN"))
+          ],
+        ),
+      );
+              },
+            ),
     );
   }
 }

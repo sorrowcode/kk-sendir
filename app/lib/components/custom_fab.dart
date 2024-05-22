@@ -25,7 +25,7 @@ class _CustomFABState extends State<CustomFAB> {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       onPressed: () {
-        showBottomSheet(
+        showModalBottomSheet(
           context: context,
           constraints: BoxConstraints(
             minWidth: MediaQuery.of(context).size.width,
@@ -39,6 +39,8 @@ class _CustomFABState extends State<CustomFAB> {
                   TextButton(
                     onPressed: () {
                       setState(() {
+                        
+
                         Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => AddDevicesTab(deviceItems: widget.deviceItems,),
                             ));
