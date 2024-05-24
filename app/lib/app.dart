@@ -1,3 +1,4 @@
+import 'package:remote_control/components/set_credentials.dart';
 import 'package:remote_control/pages/home_page.dart';
 import 'package:remote_control/pages/settings.dart';
 import 'package:remote_control/components/tab_manager/add_device_tab.dart';
@@ -16,9 +17,10 @@ class MyApp extends StatelessWidget {
       theme: lightMode,
       darkTheme: darkMode,
       routes: {
-        '/': (context) => MyHomePage(),
+        '/': (context) => const MyHomePage(),
         '/settings': (context) => const Settings(),
-        '/addDevices':(context) => const AddDevicesTab(deviceItems: [],),
+        '/addDevices':(context) => AddDevicesTab(deviceItems: const [], onTap: (String name) {},),
+        '/set_credentials':(context) => const SetCredentialsScreen(),
       },
     );
   }

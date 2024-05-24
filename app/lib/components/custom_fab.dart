@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:remote_control/components/tab_manager/add_device_tab.dart';
 
-import 'custom_dialog.dart';
 import 'package:remote_control/components/device_item.dart';
 
 class CustomFAB extends StatefulWidget {
@@ -40,9 +39,9 @@ class _CustomFABState extends State<CustomFAB> {
                     onPressed: () {
                       setState(() {
                         
-
+                        Navigator.of(context).pop();
                         Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => AddDevicesTab(deviceItems: widget.deviceItems,),
+                              builder: (context) => AddDevicesTab(deviceItems: widget.deviceItems, onTap: widget.onTap,),
                             ));
                         /*
                         showDialog<String>(

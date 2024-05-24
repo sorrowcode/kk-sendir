@@ -39,9 +39,17 @@ dependencies:
   cupertino_icons: '1.0.8'
   google_nav_bar: 
   flutter_blue_plus:
-  flutter_blue:
   get:
   permission_handler:
+  connectivity_plus:
+  network_info_plus:
+  flutter_launcher_icons:
+  passwordfield: ^0.2.0
+
+flutter_icons:
+  image_path: 'assets/icon.png'
+  android: true
+  ios: true
 
 dev_dependencies:
   flutter_test:
