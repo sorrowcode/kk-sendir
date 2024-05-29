@@ -2,18 +2,33 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+//import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:network_info_plus/network_info_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:passwordfield/passwordfield.dart';
+import 'package:remote_control/components/custom_dialog.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 
-import '../pages/home_page.dart';
+
+//import '../pages/home_page.dart';
 import 'ble_controller.dart';
+import 'credential.dart';
+import 'device_item.dart';
 
 class SetCredentialsScreen extends StatefulWidget {
   const SetCredentialsScreen({
     super.key,
+    required this.device,
+    required this.deviceItems,
+    required this.onTap,
+    required this.selMode,
     });
+
+  final BluetoothDevice device;
+  final List<DeviceItem> deviceItems;
+  final void Function(String) onTap;
+  final int selMode;
 
   @override
   State<SetCredentialsScreen> createState() => _SetCredentialsScreenState();
@@ -22,11 +37,33 @@ class SetCredentialsScreen extends StatefulWidget {
 class _SetCredentialsScreenState extends State<SetCredentialsScreen> {
   String? wifiName;
   String? wifiBSSID;
+  String wifiPassword = 'none';
+
+  late List<Credential> credentials;
+
+  late final SharedPreferences prefs;
+
+  Future<void> createInstance() async {
+     prefs = await SharedPreferences.getInstance();
+  }
+  Future<void> writePrefs(List<Credential> preferences) async {
+    for (Credential val in preferences) {
+      await prefs.setString(val.name, val.value);
+    }
+  }
+
+  Future<void> writeBle(List<Credential> preferences) async {
+    if (widget.device.isConnected == true) {
+      BleController().writeCredsToDevice(widget.device, preferences);
+    }
+  }
+
 
   @override
   void initState() {
     super.initState();
     setNetwork();
+    createInstance();
   }
   Future<void> setNetwork() async {
     final info = NetworkInfo();
@@ -41,6 +78,10 @@ class _SetCredentialsScreenState extends State<SetCredentialsScreen> {
     if (await Permission.location.isGranted) {
       wifiName = await info.getWifiName();
       wifiBSSID = await info.getWifiBSSID();
+       credentials = [
+                  Credential(name: "SSID", value: wifiName!), 
+                  Credential(name: "BSSID", value: wifiBSSID!),
+                  ];
       setState(() {});
     }
   }
@@ -53,8 +94,8 @@ class _SetCredentialsScreenState extends State<SetCredentialsScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+        child: Flex(
+          direction: Axis.vertical,
           children: [
             wifiName == null ? const Padding(
                 padding: EdgeInsets.all(8.0),
@@ -91,10 +132,36 @@ class _SetCredentialsScreenState extends State<SetCredentialsScreen> {
                       ),
                   ),
                 ),
+                onChanged: (p0) => wifiPassword = p0,
+                onSubmit: (p0) => wifiPassword = p0,
               ),
             ),
+            const Expanded(
+              child: SizedBox()
+            ),
+            ElevatedButton(
+              onPressed: () {
+                writePrefs(credentials);
+                writeBle([
+                  Credential(name: "SSID", value: wifiName!),
+                  Credential(name: "BSSID", value: wifiBSSID!),
+                  Credential(name: "PASSWORD", value: wifiPassword),
+                  ]);
+                Navigator.of(context).pop();
+                showDialog<String>(
+                  context: context,
+                  builder: (BuildContext context) => CustomDialog(
+                    deviceItems: widget.deviceItems,
+                    onTap: widget.onTap,
+                    selMode: widget.selMode
+                  )
+                );
+                setState(() {});
+              },
+              child: const Text("Confirm"),
+            )
           ],
-        ),
+        )
       ),
     );
   }

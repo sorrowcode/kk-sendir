@@ -48,7 +48,7 @@ class _SettingsState extends State<Settings> {
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop(MaterialPageRoute(
-              builder: (context) => MyHomePage(),
+              builder: (context) => const MyHomePage(),
             ));
           },
           icon: const Icon(Icons.arrow_back),

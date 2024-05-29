@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:remote_control/pages/home_page.dart';
+//import 'package:remote_control/pages/home_page.dart';
 
 class EmitterTab extends StatefulWidget {
   const EmitterTab({super.key});
@@ -12,19 +12,20 @@ class EmitterTab extends StatefulWidget {
 }
 
 class _EmitterTabState extends State<EmitterTab> {
-  final List<DropdownMenuEntry> _remotes = [
-    DropdownMenuEntry(value: 0, label: 'Hello'),
-    DropdownMenuEntry(value: 1, label: 'dadas'),
-  ];
+  //final List<DropdownMenuEntry> _remotes = [
+  //  DropdownMenuEntry(value: 0, label: 'Hello'),
+  //  DropdownMenuEntry(value: 1, label: 'dadas'),
+  //];
 
-  int _selectedRemote = 0;
+  //int _selectedRemote = 0;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
       child: Column(
         children: [
+          /*
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -40,6 +41,7 @@ class _EmitterTabState extends State<EmitterTab> {
               
             ],
           ),
+          */
           Expanded(
             child: GridView.count(
                   crossAxisCount: 3,

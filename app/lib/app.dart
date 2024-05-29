@@ -1,3 +1,4 @@
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:remote_control/components/set_credentials.dart';
 import 'package:remote_control/pages/home_page.dart';
 import 'package:remote_control/pages/settings.dart';
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => const MyHomePage(),
         '/settings': (context) => const Settings(),
         '/addDevices':(context) => AddDevicesTab(deviceItems: const [], onTap: (String name) {},),
-        '/set_credentials':(context) => const SetCredentialsScreen(),
+        '/set_credentials':(context) => SetCredentialsScreen(device: BluetoothDevice(remoteId: const DeviceIdentifier('334')), deviceItems: const [], onTap: (String name) {}, selMode: 0,),
       },
     );
   }

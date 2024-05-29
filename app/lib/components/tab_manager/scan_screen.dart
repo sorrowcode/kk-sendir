@@ -129,21 +129,9 @@ class _ScanScreenState extends State<ScanScreen> {
                                             if (isConnected == BluetoothConnectionState.connected) {
                                               Navigator.of(context).pop();
                                               Navigator.of(context).push(MaterialPageRoute(
-                                                builder: (context) => const SetCredentialsScreen(),
+                                                builder: (context) => SetCredentialsScreen(device: data.device, deviceItems: widget.deviceItems, onTap: widget.onTap, selMode: widget.selMode,),
                                               ));
-                                              setState(() {
-
-                                                /*
-                                                showDialog<String>(
-                                                  context: context,
-                                                  builder: (BuildContext context) => CustomDialog(
-                                                    deviceItems: widget.deviceItems,
-                                                    onTap: widget.onTap,
-                                                    selMode: widget.selMode
-                                                  )
-                                                );
-                                                **/
-                                              });
+                                              setState(() {});
                                             }
                                           }
                                           );
