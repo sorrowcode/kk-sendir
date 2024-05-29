@@ -4,12 +4,13 @@ import 'dart:async';
 
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:get/get.dart';
-import 'package:remote_control/components/set_credentials.dart';
+//import 'package:remote_control/components/set_credentials.dart';
 
 
 import '../device_item.dart';
 import '../ble_controller.dart';
 import '../../pages/home_page.dart';
+import '../custom_dialog.dart';
 
 
 
@@ -128,9 +129,20 @@ class _ScanScreenState extends State<ScanScreen> {
                                           data.device.connectionState.listen((isConnected) {
                                             if (isConnected == BluetoothConnectionState.connected) {
                                               Navigator.of(context).pop();
+                                              showDialog<String>(
+                                                context: context,
+                                                builder: (BuildContext context) => CustomDialog(
+                                                  deviceItems: widget.deviceItems,
+                                                  onTap: widget.onTap,
+                                                  selMode: widget.selMode
+                                                )
+                                              );
+
+                                              /*
                                               Navigator.of(context).push(MaterialPageRoute(
                                                 builder: (context) => SetCredentialsScreen(device: data.device, deviceItems: widget.deviceItems, onTap: widget.onTap, selMode: widget.selMode,),
                                               ));
+                                              */
                                               setState(() {});
                                             }
                                           }

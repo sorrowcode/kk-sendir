@@ -2,7 +2,10 @@
 
 import 'package:flutter/material.dart';
 
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+
 //import 'package:remote_control/pages/home_page.dart';
+import '../ble_controller.dart';
 
 class EmitterTab extends StatefulWidget {
   const EmitterTab({super.key});
@@ -18,6 +21,10 @@ class _EmitterTabState extends State<EmitterTab> {
   //];
 
   //int _selectedRemote = 0;
+
+  void onTap(int key) {
+    BleController().writeToDevice(device, data);
+  }
 
   @override
   Widget build(BuildContext context) {

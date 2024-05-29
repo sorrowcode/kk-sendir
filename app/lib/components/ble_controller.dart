@@ -38,7 +38,9 @@ class BleController extends GetxController{
     */
   }
 
+  Future<void> writeToDevice(BluetoothDevice device, String data) async {
 
+  }
 
   Future<void> writeCredsToDevice(BluetoothDevice device, List<Credential> creds) async {
 
