@@ -13,7 +13,7 @@ class BleController extends GetxController{
   Future scanDevices() async{
     if(await Permission.bluetoothScan.request().isGranted){
       if(await Permission.bluetoothConnect.request().isGranted){
-        await FlutterBluePlus.startScan(timeout: const Duration(seconds: duration), withKeywords: ["SendIR"]);
+        await FlutterBluePlus.startScan(timeout: const Duration(seconds: duration),);
       }
     }
   }

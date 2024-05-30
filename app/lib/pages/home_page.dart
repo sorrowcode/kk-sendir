@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+
 
 import 'package:remote_control/components/custom_navigation_bar.dart';
 import 'package:remote_control/components/device_item.dart';
@@ -19,12 +21,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   TextEditingController textController = TextEditingController();
 
-  final List<Widget> _navigationOptions = <Widget>[
-    const EmitterTab(),
-    const ReceiverTab(),
-  ];
-
-  final List<DeviceItem> _deviceItems = [];
+  static final List<DeviceItem> _deviceItems = [];
+  
 
   int _selectedIndex = 0;
 
@@ -34,9 +32,10 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void _onAddDevice(String deviceName) {
+  void _onAddDevice(String deviceName, DeviceIdentifier remoteID) {
     _deviceItems.add(DeviceItem(
       deviceName: deviceName,
+      remoteID: remoteID,
     ));
   }
 
@@ -56,11 +55,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  final List<Widget> _navigationOptions = <Widget>[
+    EmitterTab(deviceItems: _deviceItems,),
+    const ReceiverTab(),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         title: Text(_setTitle()),
         centerTitle: true,
@@ -111,7 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
           });
         },
         child: Scaffold(
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: Theme.of(context).colorScheme.surface,
           body: _navigationOptions.elementAt(_selectedIndex),
         ),
       ),

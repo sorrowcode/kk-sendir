@@ -10,8 +10,4 @@ class DeviceItem {
     required this.deviceName,
     required this.remoteID,
   });
-  DeviceItem.debug() {
-    deviceName = uuid;
-    remoteID = DeviceIdentifier);
-  }
 }

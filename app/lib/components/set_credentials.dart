@@ -23,12 +23,13 @@ class SetCredentialsScreen extends StatefulWidget {
     required this.deviceItems,
     required this.onTap,
     required this.selMode,
+    required this.remoteID,
     });
-
   final BluetoothDevice device;
   final List<DeviceItem> deviceItems;
-  final void Function(String) onTap;
+  final void Function(String, DeviceIdentifier) onTap;
   final int selMode;
+  final DeviceIdentifier remoteID;
 
   @override
   State<SetCredentialsScreen> createState() => _SetCredentialsScreenState();
@@ -153,7 +154,8 @@ class _SetCredentialsScreenState extends State<SetCredentialsScreen> {
                   builder: (BuildContext context) => CustomDialog(
                     deviceItems: widget.deviceItems,
                     onTap: widget.onTap,
-                    selMode: widget.selMode
+                    selMode: widget.selMode,
+                    remoteID: widget.remoteID,
                   )
                 );
                 setState(() {});

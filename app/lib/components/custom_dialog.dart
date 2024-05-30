@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 
 import 'package:remote_control/components/device_item.dart';
 
@@ -9,11 +10,13 @@ class CustomDialog extends StatefulWidget {
     required this.deviceItems,
     required this.onTap,
     required this.selMode,
+    required this.remoteID,
   });
 
   final List<DeviceItem> deviceItems;
-  final void Function(String) onTap;
+  final void Function(String, DeviceIdentifier) onTap;
   final int selMode;
+  final DeviceIdentifier remoteID;
 
   @override
   State<CustomDialog> createState() => _CustomDigalogState();
@@ -52,7 +55,7 @@ class _CustomDigalogState extends State<CustomDialog> {
             Align(
                 alignment: Alignment.topRight,
                 child: IconButton(
-                  color: Theme.of(context).colorScheme.onBackground,
+                  color: Theme.of(context).colorScheme.onSurface,
                   icon: const Icon(Icons.close),
                   onPressed: () {
                     setState(() {
@@ -78,7 +81,7 @@ class _CustomDigalogState extends State<CustomDialog> {
             ),
             ElevatedButton.icon(
               style: ButtonStyle(
-                backgroundColor: MaterialStatePropertyAll<Color>(
+                backgroundColor: WidgetStatePropertyAll<Color>(
                     Theme.of(context).colorScheme.primary),
               ),
               onPressed: () {
@@ -86,7 +89,7 @@ class _CustomDigalogState extends State<CustomDialog> {
                   _deviceName = textController.text;
                   if (_deviceName == "") {
                   } else {
-                    widget.onTap(_deviceName);
+                    widget.onTap(_deviceName, widget.remoteID);
                     Navigator.of(context).pop();
                     textController.clear();
                   }

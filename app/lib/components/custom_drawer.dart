@@ -1,3 +1,4 @@
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:remote_control/components/device_item.dart';
 import 'package:remote_control/pages/home_page.dart';
 import 'package:remote_control/pages/settings.dart';
@@ -67,10 +68,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
         removeAll: _removeAll,
         key: ValueKey(item.uuid),
         uuid: item.uuid,
+        remoteID: item.remoteID,
         selectedDevice: selectedDevice,
         deviceItems: widget.deviceItems,
         online: false,
-        onRename: (deviceName) {
+        onRename: (deviceName, remoteID) {
           _onRename(deviceName, item.uuid);
         },
         onTap: () {
@@ -104,25 +106,13 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 child: Padding(
                   padding: const EdgeInsets.only(top: 20),
                   child: AppBar(
-                    leading: Row(
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            setState(() {
-                              widget.deviceItems.add(DeviceItem.debug());
-                            });
-                          },
-                          icon: const Icon(Icons.add),
-                        ),
-                      ],
-                    ),
                     title: const Text(
                       'Devices',
                       style: TextStyle(fontSize: 40.0),
                     ),
                     actions: [
                       IconButton(
-                        color: Theme.of(context).colorScheme.onBackground,
+                        color: Theme.of(context).colorScheme.onSurface,
                         iconSize: 30,
                         onPressed: () {
                           setState(() {
@@ -144,7 +134,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           children: [
                             ElevatedButton(
                               style: ButtonStyle(
-                                backgroundColor: MaterialStatePropertyAll(
+                                backgroundColor: WidgetStatePropertyAll(
                                     Theme.of(context).colorScheme.primary),
                               ),
                               onPressed: () => _removeAll(),
@@ -185,6 +175,7 @@ class Device extends StatefulWidget {
     required this.onTap,
     required this.onRename,
     required this.uuid,
+    required this.remoteID,
     required this.selectedDevice,
     required this.deviceItems,
     required this.online,
@@ -192,12 +183,13 @@ class Device extends StatefulWidget {
   final void Function() removeAll;
   final void Function(int, String) removeEntry;
   final void Function() onTap;
-  final void Function(String) onRename;
+  final void Function(String, DeviceIdentifier) onRename;
   final int listIndex;
   final String selectedDevice;
   final bool online;
   final String name;
   final String uuid;
+  final DeviceIdentifier remoteID;
   final List<DeviceItem> deviceItems;
 
   @override
@@ -220,6 +212,7 @@ class _DeviceState extends State<Device> {
         deviceItems: widget.deviceItems,
         onTap: widget.onRename,
         selMode: 1,
+        remoteID: widget.remoteID,
       ),
     );
   }
@@ -288,7 +281,7 @@ class _DeviceState extends State<Device> {
         Expanded(
           child: Card(
             color: widget.online
-                ? Theme.of(context).colorScheme.surfaceVariant
+                ? Theme.of(context).colorScheme.surfaceContainerHighest
                 : Theme.of(context).colorScheme.onSurfaceVariant,
             shape: _border(),
             child: ListTile(

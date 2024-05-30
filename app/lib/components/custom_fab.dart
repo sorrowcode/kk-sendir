@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:remote_control/components/tab_manager/add_device_tab.dart';
 
 import 'package:remote_control/components/device_item.dart';
@@ -12,7 +13,7 @@ class CustomFAB extends StatefulWidget {
   });
 
   final List<DeviceItem> deviceItems;
-  final void Function(String) onTap;
+  final void Function(String, DeviceIdentifier) onTap;
   final int selMode;
 
   @override

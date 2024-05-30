@@ -3,12 +3,19 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:remote_control/components/device_item.dart';
+import 'package:remote_control/pages/home_page.dart';
 
 //import 'package:remote_control/pages/home_page.dart';
 import '../ble_controller.dart';
 
 class EmitterTab extends StatefulWidget {
-  const EmitterTab({super.key});
+  const EmitterTab({
+    super.key,
+    required this.deviceItems
+    });
+
+  final List<DeviceItem> deviceItems;
 
   @override
   State<EmitterTab> createState() => _EmitterTabState();
@@ -21,9 +28,21 @@ class _EmitterTabState extends State<EmitterTab> {
   //];
 
   //int _selectedRemote = 0;
+  final List<Key> _keys = [
+  ];
+
 
   void onTap(int key) {
-    BleController().writeToDevice(device, data);
+    DeviceIdentifier remoteID = DeviceIdentifier('1234567890');
+    for (DeviceItem item in widget.deviceItems) {
+      if (item.uuid == selectedDevice) {
+        remoteID = item.remoteID;
+      }
+    }
+    if (remoteID == DeviceIdentifier('1234567890')) {
+      throw Exception("No device selected");
+    }
+    BleController().writeToDevice(BluetoothDevice(remoteId: remoteID), "h");
   }
 
   @override
@@ -109,3 +128,20 @@ class _EmitterTabState extends State<EmitterTab> {
     );
   }
 }
+
+class Key {
+  const Key({
+    required this.protocol,
+    required this.address,
+    required this.command,
+    required this.flags,
+    required this.key,
+  });
+  final String protocol;
+  final String address;
+  final String command;
+  final String flags;
+  final int key;
+}
+
+enum Key1 {protocol, address, command, flags}

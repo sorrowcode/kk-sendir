@@ -17,7 +17,7 @@ class CustomNavigationBar extends StatelessWidget {
         backgroundColor:
             Theme.of(context).bottomNavigationBarTheme.backgroundColor,
         selectedItemColor: Theme.of(context).colorScheme.primary,
-        unselectedItemColor: Theme.of(context).colorScheme.onBackground,
+        unselectedItemColor: Theme.of(context).colorScheme.onSurface,
         enableFeedback: false,
         unselectedFontSize: 14,
         type: BottomNavigationBarType.fixed,

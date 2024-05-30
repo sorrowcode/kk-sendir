@@ -16,14 +16,14 @@ class AddDevicesTab extends StatefulWidget {
     });
 
   final List<DeviceItem> deviceItems;
-  final void Function(String) onTap;
+  final void Function(String, DeviceIdentifier) onTap;
 
   @override
   State<AddDevicesTab> createState() => _AddDevicesTabState();
 }
 
 class _AddDevicesTabState extends State<AddDevicesTab> {
-  BluetoothAdapterState _adapterState = BluetoothAdapterState.unknown;
+  BluetoothAdapterState _adapterState = BluetoothAdapterState.on;
 
   late StreamSubscription<BluetoothAdapterState> _adapterStateStateSubscription;
 
