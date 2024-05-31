@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -7,6 +9,14 @@ import 'key_item.dart';
 import 'credential.dart';
 
 class BleController extends GetxController {
+  static List<BluetoothDevice> connectedDevices = FlutterBluePlus.connectedDevices;
+  static Future<List<BluetoothDevice>> bondedDevices = FlutterBluePlus.bondedDevices;
+
+  static StreamController<bool> isSendingController = StreamController<bool>();
+
+  static bool isSending = false;
+  static Stream<bool> get isSendingStream => Stream.value(isSending);
+
   static const int duration = 30;
 // This Function will help users to scan near by BLE devices and get the list of Bluetooth devices.
   Future scanDevices() async {
@@ -25,7 +35,12 @@ class BleController extends GetxController {
 
 // This function will help user to connect to BLE devices.
   Future<void> connectToDevice(BluetoothDevice device) async {
-    await device.connect(timeout: const Duration(seconds: 30));
+    try {
+      await device.connect(timeout: const Duration(seconds: 30));
+    } catch (e) {
+      const SnackBar(content: Text("Cannot Connect to device"));
+      rethrow;
+    }
     /*
     device.connectionState.listen((isConnected) {
       if (isConnected == BluetoothConnectionState.connected) {
@@ -39,7 +54,7 @@ class BleController extends GetxController {
     */
   }
 
-  Future<void> disconnectFromAll({required bool except, required BluetoothDevice selectedDevice}) async {
+  Future<void> disconnectFromAll(bool except, BluetoothDevice selectedDevice) async {
     List<BluetoothDevice> devices = FlutterBluePlus.connectedDevices;
     for (BluetoothDevice device in devices) {
       if (except && device != selectedDevice) {
@@ -55,24 +70,25 @@ class BleController extends GetxController {
   }
 
   Future<void> writeToDevice(BluetoothDevice device, KeyItem data) async {
+    isSendingController.add(true);
     List<BluetoothService> services = await device.discoverServices();
     for (BluetoothService s in services) {
       var characteristics = s.characteristics;
       for (BluetoothCharacteristic c in characteristics) {
         if (c.properties.write) {
-          c.write(utf8.encode(data.protocol.toString()));
-          c.write(utf8.encode(data.address.toString()));
-          c.write(utf8.encode(data.command.toString()));
-          c.write(utf8.encode(data.flags.toString()));
-          print(data.address.toUnsigned(16));
-          print(data.address);
+          // c.write(utf8.encode(data.protocol.toString()));
+          // c.write(utf8.encode(data.address.toString()));
+          c.write([data.command]);
+          // c.write(utf8.encode(data.flags.toString()));
+          // print(data.address.toUnsigned(16));
+          // print(data.address);
         }
       }
     }
+    isSendingController.add(false);
   }
 
-  Future<void> writeCredsToDevice(
-      BluetoothDevice device, List<Credential> creds) async {
+  Future<void> writeCredsToDevice(BluetoothDevice device, List<Credential> creds) async {
     List<BluetoothService> services = await device.discoverServices();
     for (BluetoothService s in services) {
       var characteristics = s.characteristics;
@@ -93,6 +109,7 @@ class BleController extends GetxController {
             */
         }
       }
+    BleController.isSending = false;
     }
 
     services.clear();

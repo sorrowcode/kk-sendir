@@ -25,6 +25,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
       widget.deviceItems.clear();
       MyHomePage.selectedDevice = '0';
     });
+    BleController().disconnectFromAll(false, BluetoothDevice(remoteId: const DeviceIdentifier("ee")));
   }
 
   void _removeDevice(int index, String selUuid) {
@@ -34,6 +35,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
         deviceIndex = widget.deviceItems.indexOf(item);
         if (index == deviceIndex) {
           MyHomePage.selectedDevice = '0';
+          BleController().disconnectFromDevice(BluetoothDevice(remoteId: item.remoteID));
         }
       }
     }
@@ -43,11 +45,18 @@ class _CustomDrawerState extends State<CustomDrawer> {
   }
 
   void _onTap(String name, String uuid, DeviceIdentifier remoteID) {
-    BleController().disconnectFromAll(except: true, selectedDevice:  BluetoothDevice(remoteId: remoteID));
-    BleController().connectToDevice(BluetoothDevice(remoteId: remoteID));
-    setState(() {
-      MyHomePage.selectedDevice = uuid;
-    });
+    if (MyHomePage.selectedDevice != uuid) {
+      BleController().disconnectFromAll(true, BluetoothDevice(remoteId: remoteID));
+      BleController().connectToDevice(BluetoothDevice(remoteId: remoteID));
+      setState(() {
+        MyHomePage.selectedDevice = uuid;
+      });
+    }else {
+      BleController().disconnectFromDevice(BluetoothDevice(remoteId: remoteID));
+      setState(() {
+        MyHomePage.selectedDevice = '0';
+      });
+    }
   }
 
   void _onRename(String newName, String selUuid) {

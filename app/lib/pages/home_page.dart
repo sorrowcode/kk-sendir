@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:remote_control/components/ble_controller.dart';
 
 import 'package:remote_control/components/custom_navigation_bar.dart';
 import 'package:remote_control/components/device_item.dart';
@@ -18,10 +21,35 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  static final List<DeviceItem> _deviceItems = [];
+  static final  List<DeviceItem> _deviceItems = [
+    DeviceItem(deviceName: "SendIR", remoteID: const DeviceIdentifier("FC:B4:67:F0:09:0A")),
+  ];
 
   int _selectedIndex = 0;
 
+  bool isSending = false;
+
+  Stream stream = BleController.isSendingController.stream;
+
+  void _initializeDeviceItems() {
+    setState(() {
+      for (BluetoothDevice device in BleController.connectedDevices) {
+      _deviceItems.add(DeviceItem(
+        deviceName: device.platformName,
+        remoteID: device.remoteId,
+      ));
+    }
+    });
+  }
+  void _streamstart() {
+    stream.listen(
+      (data) {
+        setState(() {
+          isSending = data;
+        });
+      },
+    );
+  }
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -59,6 +87,19 @@ class _MyHomePageState extends State<MyHomePage> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    _initializeDeviceItems();
+    _streamstart();
+  }
+
+  @override
+  void dispose() {
+    BleController.isSendingController.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
@@ -80,9 +121,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 padding: const EdgeInsets.all(2), // border width
                 child: Container(
                   // or ClipRRect if you need to clip the content
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Colors.green, // inner circle color
+                    color: isSending == false ? Theme.of(context).appBarTheme.backgroundColor
+                                            : Colors.green, // inner circle color
                   ),
                 ),
               ),
