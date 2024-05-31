@@ -39,10 +39,14 @@ class BleController extends GetxController {
     */
   }
 
-  Future<void> disconnectFromAll() async {
+  Future<void> disconnectFromAll({required bool except, required BluetoothDevice selectedDevice}) async {
     List<BluetoothDevice> devices = FlutterBluePlus.connectedDevices;
     for (BluetoothDevice device in devices) {
-      await device.disconnect();
+      if (except && device != selectedDevice) {
+        await device.disconnect();
+      }else {
+        await device.disconnect();
+      }
     }
   }
 

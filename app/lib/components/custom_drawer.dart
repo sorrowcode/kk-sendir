@@ -43,7 +43,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
   }
 
   void _onTap(String name, String uuid, DeviceIdentifier remoteID) {
-    BleController().disconnectFromAll();
+    BleController().disconnectFromAll(except: true, selectedDevice:  BluetoothDevice(remoteId: remoteID));
     BleController().connectToDevice(BluetoothDevice(remoteId: remoteID));
     setState(() {
       MyHomePage.selectedDevice = uuid;
