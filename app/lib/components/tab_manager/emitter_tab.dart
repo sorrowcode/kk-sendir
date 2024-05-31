@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
@@ -29,6 +31,7 @@ class _EmitterTabState extends State<EmitterTab> {
 
   //int _selectedRemote = 0;
   final List<Key> _keys = [
+    Key(protocol: 2, address: 0xEF00.toUnsigned(16), command: 0x3, flags: 4, key: 0)
   ];
 
 
@@ -42,7 +45,7 @@ class _EmitterTabState extends State<EmitterTab> {
     if (remoteID == DeviceIdentifier('1234567890')) {
       throw Exception("No device selected");
     }
-    BleController().writeToDevice(BluetoothDevice(remoteId: remoteID), "h");
+    BleController().writeToDevice(BluetoothDevice(remoteId: remoteID), _keys[key]);
   }
 
   @override
@@ -72,7 +75,7 @@ class _EmitterTabState extends State<EmitterTab> {
             child: GridView.count(
                   crossAxisCount: 3,
                   children: [
-                    ElevatedButton(onPressed:() {}, child: Icon(Icons.power_settings_new)),
+                    ElevatedButton(onPressed:() => onTap(0), child: Icon(Icons.power_settings_new)),
                     ElevatedButton(onPressed:() {}, child: Text("null")),
                     Icon(Icons.radio_button_unchecked),
 
@@ -137,11 +140,9 @@ class Key {
     required this.flags,
     required this.key,
   });
-  final String protocol;
-  final String address;
-  final String command;
-  final String flags;
+  final int protocol;
+  final int address;
+  final int command;
+  final int flags;
   final int key;
 }
-
-enum Key1 {protocol, address, command, flags}

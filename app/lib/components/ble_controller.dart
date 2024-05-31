@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:remote_control/components/tab_manager/emitter_tab.dart';
 
 import 'credential.dart';
 
@@ -13,18 +14,18 @@ class BleController extends GetxController{
   Future scanDevices() async{
     if(await Permission.bluetoothScan.request().isGranted){
       if(await Permission.bluetoothConnect.request().isGranted){
-        await FlutterBluePlus.startScan(timeout: const Duration(seconds: duration),);
+        await FlutterBluePlus.startScan(timeout: const Duration(seconds: duration), withKeywords: ["SendIR"]);
       }
     }
   }
 
-  Future stopScan() async {
-    await FlutterBluePlus.stopScan();
+  void stopScan() {
+    FlutterBluePlus.stopScan();
   }
 
 // This function will help user to connect to BLE devices.
   Future<void> connectToDevice(BluetoothDevice device) async {
-    await device.connect(timeout: const Duration(seconds: 30), autoConnect: true);
+    await device.connect(timeout: const Duration(seconds: 30));
     /*
     device.connectionState.listen((isConnected) {
       if (isConnected == BluetoothConnectionState.connected) {
@@ -38,7 +39,22 @@ class BleController extends GetxController{
     */
   }
 
-  Future<void> writeToDevice(BluetoothDevice device, String data) async {
+  Future<void> writeToDevice(BluetoothDevice device, Key data) async {
+
+    List<BluetoothService> services = await device.discoverServices();
+    for (BluetoothService s in services) {
+        var characteristics = s.characteristics;
+        for(BluetoothCharacteristic c in characteristics) {
+          if (c.properties.write) {
+            c.write(utf8.encode(data.protocol.toString()));
+            c.write(utf8.encode(data.address.toString()));
+            c.write(utf8.encode(data.command.toString()));
+            c.write(utf8.encode(data.flags.toString()));
+            print(data.address.toUnsigned(16));
+            print(data.address);
+          }
+        }
+    }
 
   }
 

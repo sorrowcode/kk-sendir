@@ -35,19 +35,29 @@ class _ScanScreenState extends State<ScanScreen> {
   bool isScanning = false;
   
   Future scanning() async {
+    while (mounted) {
       if (!isScanning){
-      setState(() {
-        isScanning = true;
-      });
-      await Future.delayed(const Duration(seconds: BleController.duration));
-      setState(() {
-        isScanning = false;
-      });
-    }else{
-      await Future.delayed(const Duration(seconds: BleController.duration));
-      setState(() {
-        isScanning = false;
-      });
+        setState(() {
+          isScanning = true;
+        });
+        await Future.delayed(const Duration(seconds: BleController.duration));
+        if (mounted) {
+          setState(() {
+            isScanning = false;
+          });
+        }else {
+          break;
+        }
+      }else{
+        await Future.delayed(const Duration(seconds: BleController.duration));
+        if (mounted) {
+          setState(() {
+            isScanning = false;
+          });
+        }else {
+          break;
+        }
+      }
     }
   }
 

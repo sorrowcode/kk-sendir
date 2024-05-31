@@ -134,8 +134,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           children: [
                             ElevatedButton(
                               style: ButtonStyle(
-                                backgroundColor: WidgetStatePropertyAll(
-                                    Theme.of(context).colorScheme.primary),
+                                backgroundColor: MaterialStatePropertyAll(Theme.of(context).colorScheme.primary),
                               ),
                               onPressed: () => _removeAll(),
                               child: Text(
@@ -281,7 +280,7 @@ class _DeviceState extends State<Device> {
         Expanded(
           child: Card(
             color: widget.online
-                ? Theme.of(context).colorScheme.surfaceContainerHighest
+                ? Theme.of(context).colorScheme.surfaceVariant
                 : Theme.of(context).colorScheme.onSurfaceVariant,
             shape: _border(),
             child: ListTile(
