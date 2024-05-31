@@ -81,7 +81,8 @@ class _CustomDigalogState extends State<CustomDialog> {
             ),
             ElevatedButton.icon(
               style: ButtonStyle(
-                backgroundColor: MaterialStatePropertyAll(Theme.of(context).colorScheme.primary),
+                backgroundColor: WidgetStatePropertyAll(
+                    Theme.of(context).colorScheme.primary),
               ),
               onPressed: () {
                 setState(() {

@@ -7,13 +7,12 @@ import '../device_item.dart';
 import 'bluetooth_off_screen.dart';
 import 'scan_screen.dart';
 
-
 class AddDevicesTab extends StatefulWidget {
   const AddDevicesTab({
     super.key,
     required this.deviceItems,
     required this.onTap,
-    });
+  });
 
   final List<DeviceItem> deviceItems;
   final void Function(String, DeviceIdentifier) onTap;
@@ -30,7 +29,8 @@ class _AddDevicesTabState extends State<AddDevicesTab> {
   @override
   void initState() {
     super.initState();
-    _adapterStateStateSubscription = FlutterBluePlus.adapterState.listen((state) {
+    _adapterStateStateSubscription =
+        FlutterBluePlus.adapterState.listen((state) {
       _adapterState = state;
       if (mounted) {
         setState(() {});
@@ -47,7 +47,11 @@ class _AddDevicesTabState extends State<AddDevicesTab> {
   @override
   Widget build(BuildContext context) {
     return _adapterState == BluetoothAdapterState.on
-        ? ScanScreen(deviceItems: widget.deviceItems, onTap: widget.onTap, selMode: 0,)
+        ? ScanScreen(
+            deviceItems: widget.deviceItems,
+            onTap: widget.onTap,
+            selMode: 0,
+          )
         : BluetoothOffScreen(adapterState: _adapterState);
   }
 }

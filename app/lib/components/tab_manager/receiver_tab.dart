@@ -9,14 +9,13 @@ class ReceiverTab extends StatefulWidget {
 }
 
 class _ReceiverTabState extends State<ReceiverTab> {
-
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
-          Text(selectedDevice),
+          Text(MyHomePage.selectedDevice),
         ],
       ),
     );

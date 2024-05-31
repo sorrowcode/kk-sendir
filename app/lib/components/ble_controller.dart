@@ -1,20 +1,20 @@
-
 import 'dart:convert';
 
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:remote_control/components/tab_manager/emitter_tab.dart';
-
+import 'key_item.dart';
 import 'credential.dart';
 
-class BleController extends GetxController{  
+class BleController extends GetxController {
   static const int duration = 30;
 // This Function will help users to scan near by BLE devices and get the list of Bluetooth devices.
-  Future scanDevices() async{
-    if(await Permission.bluetoothScan.request().isGranted){
-      if(await Permission.bluetoothConnect.request().isGranted){
-        await FlutterBluePlus.startScan(timeout: const Duration(seconds: duration), withKeywords: ["SendIR"]);
+  Future scanDevices() async {
+    if (await Permission.bluetoothScan.request().isGranted) {
+      if (await Permission.bluetoothConnect.request().isGranted) {
+        await FlutterBluePlus.startScan(
+            timeout: const Duration(seconds: duration),
+            withKeywords: ["SendIR"]);
       }
     }
   }
@@ -39,37 +39,46 @@ class BleController extends GetxController{
     */
   }
 
-  Future<void> writeToDevice(BluetoothDevice device, Key data) async {
-
-    List<BluetoothService> services = await device.discoverServices();
-    for (BluetoothService s in services) {
-        var characteristics = s.characteristics;
-        for(BluetoothCharacteristic c in characteristics) {
-          if (c.properties.write) {
-            c.write(utf8.encode(data.protocol.toString()));
-            c.write(utf8.encode(data.address.toString()));
-            c.write(utf8.encode(data.command.toString()));
-            c.write(utf8.encode(data.flags.toString()));
-            print(data.address.toUnsigned(16));
-            print(data.address);
-          }
-        }
+  Future<void> disconnectFromAll() async {
+    List<BluetoothDevice> devices = FlutterBluePlus.connectedDevices;
+    for (BluetoothDevice device in devices) {
+      await device.disconnect();
     }
-
   }
 
-  Future<void> writeCredsToDevice(BluetoothDevice device, List<Credential> creds) async {
+  Future<void> disconnectFromDevice(BluetoothDevice device) async {
+    await device.disconnect();
+  }
 
+  Future<void> writeToDevice(BluetoothDevice device, KeyItem data) async {
     List<BluetoothService> services = await device.discoverServices();
     for (BluetoothService s in services) {
-        var characteristics = s.characteristics;
-        for(BluetoothCharacteristic c in characteristics) {
-          if (c.properties.write) {
-            for (Credential cred in creds) {
-              c.write(utf8.encode(cred.name));
-              c.write(utf8.encode(cred.value));
-            }
-            /*
+      var characteristics = s.characteristics;
+      for (BluetoothCharacteristic c in characteristics) {
+        if (c.properties.write) {
+          c.write(utf8.encode(data.protocol.toString()));
+          c.write(utf8.encode(data.address.toString()));
+          c.write(utf8.encode(data.command.toString()));
+          c.write(utf8.encode(data.flags.toString()));
+          print(data.address.toUnsigned(16));
+          print(data.address);
+        }
+      }
+    }
+  }
+
+  Future<void> writeCredsToDevice(
+      BluetoothDevice device, List<Credential> creds) async {
+    List<BluetoothService> services = await device.discoverServices();
+    for (BluetoothService s in services) {
+      var characteristics = s.characteristics;
+      for (BluetoothCharacteristic c in characteristics) {
+        if (c.properties.write) {
+          for (Credential cred in creds) {
+            c.write(utf8.encode(cred.name));
+            c.write(utf8.encode(cred.value));
+          }
+          /*
             c.write(utf8.encode('SSID'));
             c.write(utf8.encode('BachGarten'));
             c.write(utf8.encode('BSSID'));
@@ -78,11 +87,10 @@ class BleController extends GetxController{
             c.write(utf8.encode('23434'));
             
             */
-            
-          }
         }
+      }
     }
-    
+
     services.clear();
     /*
     List<BluetoothService> services = await device.discoverServices();

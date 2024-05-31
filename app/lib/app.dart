@@ -20,8 +20,16 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const MyHomePage(),
         '/settings': (context) => const Settings(),
-        '/addDevices':(context) => AddDevicesTab(deviceItems: const [], onTap: (String name, remoteID) {},),
-        '/set_credentials':(context) => SetCredentialsScreen(device: BluetoothDevice(remoteId: const DeviceIdentifier('334')), deviceItems: const [], onTap: (String name, remoteID) {}, selMode: 0, remoteID: const DeviceIdentifier('334')),
+        '/addDevices': (context) => AddDevicesTab(
+              deviceItems: const [],
+              onTap: (String name, remoteID) {},
+            ),
+        '/set_credentials': (context) => SetCredentialsScreen(
+            device: BluetoothDevice(remoteId: const DeviceIdentifier('334')),
+            deviceItems: const [],
+            onTap: (String name, remoteID) {},
+            selMode: 0,
+            remoteID: const DeviceIdentifier('334')),
       },
     );
   }

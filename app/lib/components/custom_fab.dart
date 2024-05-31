@@ -39,11 +39,13 @@ class _CustomFABState extends State<CustomFAB> {
                   TextButton(
                     onPressed: () {
                       setState(() {
-                        
                         Navigator.of(context).pop();
                         Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => AddDevicesTab(deviceItems: widget.deviceItems, onTap: widget.onTap,),
-                            ));
+                          builder: (context) => AddDevicesTab(
+                            deviceItems: widget.deviceItems,
+                            onTap: widget.onTap,
+                          ),
+                        ));
                         /*
                         showDialog<String>(
                             context: context,
@@ -55,7 +57,6 @@ class _CustomFABState extends State<CustomFAB> {
                         );
                         */
                       });
-
                     },
                     child: const Text('Add Device'),
                   ),

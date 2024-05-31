@@ -12,10 +12,10 @@ class _SettingsState extends State<Settings> {
   bool _isOn = false;
   @override
   Widget build(BuildContext context) {
-    final MaterialStateProperty<Color?> trackColor =
-        MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+    final WidgetStateProperty<Color?> trackColor =
+        WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
       // Track color when the switch is selected.
-      if (states.contains(MaterialState.selected)) {
+      if (states.contains(WidgetState.selected)) {
         return Colors.amber;
       }
       // Otherwise return null to set default track color
@@ -24,15 +24,15 @@ class _SettingsState extends State<Settings> {
       return null;
     });
 
-    final MaterialStateProperty<Color?> overlayColor =
-        MaterialStateProperty.resolveWith<Color?>(
-      (Set<MaterialState> states) {
+    final WidgetStateProperty<Color?> overlayColor =
+        WidgetStateProperty.resolveWith<Color?>(
+      (Set<WidgetState> states) {
         // Material color when switch is selected.
-        if (states.contains(MaterialState.selected)) {
+        if (states.contains(WidgetState.selected)) {
           return Colors.amber.withOpacity(0.54);
         }
         // Material color when switch is disabled.
-        if (states.contains(MaterialState.disabled)) {
+        if (states.contains(WidgetState.disabled)) {
           return Colors.grey.shade400;
         }
         // Otherwise return null to set default material color

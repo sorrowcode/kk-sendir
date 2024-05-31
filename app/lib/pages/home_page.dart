@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 
-
 import 'package:remote_control/components/custom_navigation_bar.dart';
 import 'package:remote_control/components/device_item.dart';
 import 'package:remote_control/components/tab_manager/emitter_tab.dart';
@@ -9,20 +8,17 @@ import 'package:remote_control/components/tab_manager/receiver_tab.dart';
 import 'package:remote_control/components/custom_fab.dart';
 import 'package:remote_control/components/custom_drawer.dart';
 
-String selectedDevice = '0';
-
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
+
+  static String selectedDevice = "0";
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  TextEditingController textController = TextEditingController();
-
   static final List<DeviceItem> _deviceItems = [];
-  
 
   int _selectedIndex = 0;
 
@@ -41,11 +37,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   String _setTitle() {
     late String selectedDeviceName;
-    if (selectedDevice == '0') {
+    if (MyHomePage.selectedDevice == '0') {
       return 'Select Device';
     } else {
       for (DeviceItem items in _deviceItems) {
-        if (items.uuid == selectedDevice) {
+        if (items.uuid == MyHomePage.selectedDevice) {
           selectedDeviceName = items.deviceName;
         }
       }
@@ -56,7 +52,9 @@ class _MyHomePageState extends State<MyHomePage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final List<Widget> _navigationOptions = <Widget>[
-    EmitterTab(deviceItems: _deviceItems,),
+    EmitterTab(
+      deviceItems: _deviceItems,
+    ),
     const ReceiverTab(),
   ];
 

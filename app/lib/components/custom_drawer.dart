@@ -1,4 +1,5 @@
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:remote_control/components/ble_controller.dart';
 import 'package:remote_control/components/device_item.dart';
 import 'package:remote_control/pages/home_page.dart';
 import 'package:remote_control/pages/settings.dart';
@@ -22,17 +23,17 @@ class _CustomDrawerState extends State<CustomDrawer> {
   void _removeAll() {
     setState(() {
       widget.deviceItems.clear();
-      selectedDevice = '0';
+      MyHomePage.selectedDevice = '0';
     });
   }
 
   void _removeDevice(int index, String selUuid) {
     late int deviceIndex;
     for (DeviceItem item in widget.deviceItems) {
-      if (item.uuid == selectedDevice) {
+      if (item.uuid == MyHomePage.selectedDevice) {
         deviceIndex = widget.deviceItems.indexOf(item);
         if (index == deviceIndex) {
-          selectedDevice = '0';
+          MyHomePage.selectedDevice = '0';
         }
       }
     }
@@ -41,9 +42,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
     });
   }
 
-  void _onTap(String name, String uuid) {
+  void _onTap(String name, String uuid, DeviceIdentifier remoteID) {
+    BleController().disconnectFromAll();
+    BleController().connectToDevice(BluetoothDevice(remoteId: remoteID));
     setState(() {
-      selectedDevice = uuid;
+      MyHomePage.selectedDevice = uuid;
     });
   }
 
@@ -69,14 +72,14 @@ class _CustomDrawerState extends State<CustomDrawer> {
         key: ValueKey(item.uuid),
         uuid: item.uuid,
         remoteID: item.remoteID,
-        selectedDevice: selectedDevice,
+        selectedDevice: MyHomePage.selectedDevice,
         deviceItems: widget.deviceItems,
         online: false,
         onRename: (deviceName, remoteID) {
           _onRename(deviceName, item.uuid);
         },
         onTap: () {
-          _onTap(item.deviceName, item.uuid);
+          _onTap(item.deviceName, item.uuid, item.remoteID);
         },
       ));
     }
@@ -134,7 +137,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           children: [
                             ElevatedButton(
                               style: ButtonStyle(
-                                backgroundColor: MaterialStatePropertyAll(Theme.of(context).colorScheme.primary),
+                                backgroundColor: WidgetStatePropertyAll(
+                                    Theme.of(context).colorScheme.primary),
                               ),
                               onPressed: () => _removeAll(),
                               child: Text(
@@ -280,7 +284,7 @@ class _DeviceState extends State<Device> {
         Expanded(
           child: Card(
             color: widget.online
-                ? Theme.of(context).colorScheme.surfaceVariant
+                ? Theme.of(context).colorScheme.surfaceContainerHighest
                 : Theme.of(context).colorScheme.onSurfaceVariant,
             shape: _border(),
             child: ListTile(

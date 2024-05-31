@@ -24,7 +24,10 @@ class BluetoothOffScreen extends StatelessWidget {
     return Text(
       //'Bluetooth Adapter is ${state != null ? state : 'not available'}',
       'Bluetooth Adapter is ${state ?? 'not available'}',
-      style: Theme.of(context).primaryTextTheme.titleSmall?.copyWith(color: Colors.white),
+      style: Theme.of(context)
+          .primaryTextTheme
+          .titleSmall
+          ?.copyWith(color: Colors.white),
     );
   }
 

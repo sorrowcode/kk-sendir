@@ -18,7 +18,7 @@ ThemeData lightMode = ThemeData(
     onTertiary: Color(0xFFece8e4),
     surface: Color(0xFFece8e4),
     onSurface: Color(0xFF000000),
-    surfaceVariant: Color(0xFF79cda0),
+    surfaceContainerHighest: Color(0xFF79cda0),
     onSurfaceVariant: Color(0xFFf37777),
     error: Brightness.light == Brightness.light
         ? Color(0xffB3261E)
@@ -51,7 +51,7 @@ ThemeData darkMode = ThemeData(
       onTertiary: Color(0xFF1b1713),
       surface: Color(0xFF191515),
       onSurface: Color(0xFFffffff),
-      surfaceVariant: Color(0xFF278d56),
+      surfaceContainerHighest: Color(0xFF278d56),
       onSurfaceVariant: Color(0xFF3b0d0d),
       error: Brightness.dark == Brightness.light
           ? Color(0xffB3261E)
