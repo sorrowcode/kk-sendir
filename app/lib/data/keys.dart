@@ -1,7 +1,10 @@
 import '../components/key_item.dart';
 
-class KeyList {
+// import 'package:flutter/material.dart';
 
+// import 'package:flutter_draggable_gridview/flutter_draggable_gridview.dart';
+
+class CustomRemote {
   static final List<KeyItem> ledStripe = [
     KeyItem(
       protocol: 1,
@@ -89,25 +92,13 @@ class KeyList {
     ),
   ];
 
-  static final List<KeyItem> keys = [
+  static final List<KeyItem> defaultList = [
     KeyItem(
-        protocol: 1,
-        address: 1.toUnsigned(16),
-        command: 3,
-        flags: 0,
-        key: 0),
+        protocol: 1, address: 1.toUnsigned(16), command: 3, flags: 0, key: 0),
     KeyItem(
-        protocol: 1,
-        address: 1.toUnsigned(16),
-        command: 2,
-        flags: 0,
-        key: 15),
+        protocol: 1, address: 1.toUnsigned(16), command: 2, flags: 0, key: 15),
     KeyItem(
-        protocol: 1,
-        address: 1.toUnsigned(16),
-        command: 13,
-        flags: 0,
-        key: 19),
+        protocol: 1, address: 1.toUnsigned(16), command: 13, flags: 0, key: 19),
     KeyItem(
       protocol: 1,
       address: 1.toUnsigned(16),
@@ -123,4 +114,17 @@ class KeyList {
       key: 2,
     )
   ];
+
+  /*
+  static final Widget draggableRemoteLayout = DraggableGridViewBuilder(
+    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: 4,
+      childAspectRatio: 1,
+    ),
+    dragCompletion: (List<DraggableGridItem> list, int beforeIndex, int afterIndex) {
+      print( 'onDragAccept: $beforeIndex -> $afterIndex');
+    },
+    children: List.generate(, (index) => null),
+  );
+  */
 }

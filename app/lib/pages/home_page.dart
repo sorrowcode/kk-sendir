@@ -14,33 +14,35 @@ import 'package:remote_control/components/custom_drawer.dart';
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
-
   static String selectedDevice = "0";
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  static final  List<DeviceItem> _deviceItems = [
-    DeviceItem(deviceName: "SendIR", remoteID: const DeviceIdentifier("FC:B4:67:F0:09:0A")),
+  static final List<DeviceItem> _deviceItems = [
+    DeviceItem(
+        deviceName: "SendIR",
+        remoteID: const DeviceIdentifier("FC:B4:67:F0:09:0A")),
   ];
 
   int _selectedIndex = 0;
 
   bool isSending = false;
 
-  Stream stream = BleController.isSendingController.stream;
+  Stream<bool> stream = BleController.isSendingController.stream;
 
   void _initializeDeviceItems() {
     setState(() {
       for (BluetoothDevice device in BleController.connectedDevices) {
-      _deviceItems.add(DeviceItem(
-        deviceName: device.platformName,
-        remoteID: device.remoteId,
-      ));
-    }
+        _deviceItems.add(DeviceItem(
+          deviceName: device.platformName,
+          remoteID: device.remoteId,
+        ));
+      }
     });
   }
+
   void _streamstart() {
     stream.listen(
       (data) {
@@ -50,6 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
       },
     );
   }
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -123,8 +126,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   // or ClipRRect if you need to clip the content
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: isSending == false ? Theme.of(context).appBarTheme.backgroundColor
-                                            : Colors.green, // inner circle color
+                    color: isSending == false
+                        ? Theme.of(context).appBarTheme.backgroundColor
+                        : Colors.green, // inner circle color
                   ),
                 ),
               ),

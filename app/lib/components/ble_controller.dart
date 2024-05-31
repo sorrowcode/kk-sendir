@@ -9,10 +9,13 @@ import 'key_item.dart';
 import 'credential.dart';
 
 class BleController extends GetxController {
-  static List<BluetoothDevice> connectedDevices = FlutterBluePlus.connectedDevices;
-  static Future<List<BluetoothDevice>> bondedDevices = FlutterBluePlus.bondedDevices;
+  static List<BluetoothDevice> connectedDevices =
+      FlutterBluePlus.connectedDevices;
+  static Future<List<BluetoothDevice>> bondedDevices =
+      FlutterBluePlus.bondedDevices;
 
-  static StreamController<bool> isSendingController = StreamController<bool>();
+  static StreamController<bool> isSendingController =
+      StreamController<bool>.broadcast();
 
   static bool isSending = false;
   static Stream<bool> get isSendingStream => Stream.value(isSending);
@@ -54,12 +57,13 @@ class BleController extends GetxController {
     */
   }
 
-  Future<void> disconnectFromAll(bool except, BluetoothDevice selectedDevice) async {
+  Future<void> disconnectFromAll(
+      bool except, BluetoothDevice selectedDevice) async {
     List<BluetoothDevice> devices = FlutterBluePlus.connectedDevices;
     for (BluetoothDevice device in devices) {
       if (except && device != selectedDevice) {
         await device.disconnect();
-      }else {
+      } else {
         await device.disconnect();
       }
     }
@@ -69,8 +73,9 @@ class BleController extends GetxController {
     await device.disconnect();
   }
 
-  Future<void> writeToDevice(BluetoothDevice device, KeyItem data) async {
-    isSendingController.add(true);
+  Future<void> writeToDevice(
+      BluetoothDevice device, KeyItem data, bool stream) async {
+    stream == true ? isSendingController.add(true) : null;
     List<BluetoothService> services = await device.discoverServices();
     for (BluetoothService s in services) {
       var characteristics = s.characteristics;
@@ -78,17 +83,20 @@ class BleController extends GetxController {
         if (c.properties.write) {
           // c.write(utf8.encode(data.protocol.toString()));
           // c.write(utf8.encode(data.address.toString()));
+
           c.write([data.command]);
+
           // c.write(utf8.encode(data.flags.toString()));
           // print(data.address.toUnsigned(16));
           // print(data.address);
         }
       }
     }
-    isSendingController.add(false);
+    stream == true ? isSendingController.add(false) : null;
   }
 
-  Future<void> writeCredsToDevice(BluetoothDevice device, List<Credential> creds) async {
+  Future<void> writeCredsToDevice(
+      BluetoothDevice device, List<Credential> creds) async {
     List<BluetoothService> services = await device.discoverServices();
     for (BluetoothService s in services) {
       var characteristics = s.characteristics;
@@ -109,7 +117,7 @@ class BleController extends GetxController {
             */
         }
       }
-    BleController.isSending = false;
+      BleController.isSending = false;
     }
 
     services.clear();
