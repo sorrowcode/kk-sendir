@@ -5,9 +5,9 @@ import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:remote_control/components/ble_controller.dart';
 
 import 'package:remote_control/components/custom_navigation_bar.dart';
-import 'package:remote_control/components/device_item.dart';
-import 'package:remote_control/components/tab_manager/emitter_tab.dart';
-import 'package:remote_control/components/tab_manager/receiver_tab.dart';
+import 'package:remote_control/components/items/device_item.dart';
+import 'package:remote_control/components/emitter_tab.dart';
+import 'package:remote_control/components/receiver_tab.dart';
 import 'package:remote_control/components/custom_fab.dart';
 import 'package:remote_control/components/custom_drawer.dart';
 

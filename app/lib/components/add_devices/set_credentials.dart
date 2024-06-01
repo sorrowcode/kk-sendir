@@ -11,9 +11,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 
 //import '../pages/home_page.dart';
-import 'ble_controller.dart';
-import 'credential.dart';
-import 'device_item.dart';
+import '../ble_controller.dart';
+import '../items/credential.dart';
+import '../items/device_item.dart';
 
 class SetCredentialsScreen extends StatefulWidget {
   const SetCredentialsScreen({

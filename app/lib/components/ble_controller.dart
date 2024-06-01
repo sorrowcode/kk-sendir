@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'key_item.dart';
-import 'credential.dart';
+import 'items/key_item.dart';
+import 'items/credential.dart';
 
 class BleController extends GetxController {
   static List<BluetoothDevice> connectedDevices =

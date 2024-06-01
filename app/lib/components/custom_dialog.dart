@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 
-import 'package:remote_control/components/device_item.dart';
+import 'package:remote_control/components/items/device_item.dart';
 
 class CustomDialog extends StatefulWidget {
   const CustomDialog({

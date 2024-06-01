@@ -5,7 +5,7 @@ import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:get/get.dart';
 //import 'package:remote_control/components/set_credentials.dart';
 
-import '../device_item.dart';
+import '../items/device_item.dart';
 import '../ble_controller.dart';
 import '../../pages/home_page.dart';
 import '../custom_dialog.dart';

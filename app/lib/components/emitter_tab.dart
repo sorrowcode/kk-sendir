@@ -6,12 +6,12 @@ import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 // import 'package:get/get.dart';
 
 
-import 'package:remote_control/components/device_item.dart';
+import 'package:remote_control/components/items/device_item.dart';
 import 'package:remote_control/data/led_stripe.dart';
 import 'package:remote_control/pages/home_page.dart';
 
-import '../ble_controller.dart';
-import '../key_item.dart';
+import 'ble_controller.dart';
+import 'items/key_item.dart';
 
 
 class EmitterTab extends StatefulWidget {

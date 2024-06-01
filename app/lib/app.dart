@@ -1,8 +1,8 @@
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
-import 'package:remote_control/components/set_credentials.dart';
+import 'package:remote_control/components/add_devices/set_credentials.dart';
 import 'package:remote_control/pages/home_page.dart';
 import 'package:remote_control/pages/settings.dart';
-import 'package:remote_control/components/tab_manager/add_device_tab.dart';
+import 'package:remote_control/components/add_devices/add_device_tab.dart';
 import 'package:remote_control/theme/theme.dart';
 import 'package:flutter/material.dart';
 

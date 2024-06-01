@@ -1,4 +1,4 @@
-import '../components/key_item.dart';
+import '../components/items/key_item.dart';
 // import '../components/tab_manager/emitter_tab.dart';
 
 // import 'package:flutter/material.dart';

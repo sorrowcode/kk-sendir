@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 
-import '../device_item.dart';
+import '../items/device_item.dart';
 import 'bluetooth_off_screen.dart';
 import 'scan_screen.dart';
 

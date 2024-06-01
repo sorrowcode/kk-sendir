@@ -1,6 +1,6 @@
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:remote_control/components/ble_controller.dart';
-import 'package:remote_control/components/device_item.dart';
+import 'package:remote_control/components/items/device_item.dart';
 import 'package:remote_control/pages/home_page.dart';
 import 'package:remote_control/pages/settings.dart';
 import 'package:remote_control/components/custom_dialog.dart';

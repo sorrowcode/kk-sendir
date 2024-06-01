@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
-import 'package:remote_control/components/tab_manager/add_device_tab.dart';
+import 'package:remote_control/components/add_devices/add_device_tab.dart';
 
-import 'package:remote_control/components/device_item.dart';
+import 'package:remote_control/components/items/device_item.dart';
 
 class CustomFAB extends StatefulWidget {
   const CustomFAB({
