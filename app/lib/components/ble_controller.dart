@@ -47,6 +47,15 @@ class BleController extends GetxController {
           content: StatefulBuilder(
             builder: (stflContext, setState) {
               while (stflContext.mounted) {
+                Widget CustomText() {
+                  if (connectionState == 2) {
+                    return const Text("Connected!");
+                  } else if (connectionState == 3) {
+                    return const CircularProgressIndicator();
+                  } else {
+                    return const Text("Device not reachable");
+                  }
+                }
                 Future connectToDevice() async {
                   if (connectionState == 0) {
                     try {
@@ -84,8 +93,8 @@ class BleController extends GetxController {
                   children: <Widget>[
 
                     Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: isConnecting() ? const CircularProgressIndicator() : const Text("Device not reachable"),
+                      padding: const EdgeInsets.all(12),
+                      child: CustomText(),
                     ),
 
                     ElevatedButton(
