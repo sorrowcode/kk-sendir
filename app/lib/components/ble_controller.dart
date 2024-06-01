@@ -11,11 +11,11 @@ import 'items/credential.dart';
 class BleController extends GetxController {
   static List<BluetoothDevice> connectedDevices =
       FlutterBluePlus.connectedDevices;
-  static Future<List<BluetoothDevice>> bondedDevices =
-      FlutterBluePlus.bondedDevices;
 
   static StreamController<bool> isSendingController =
       StreamController<bool>.broadcast();
+
+  static StreamController<bool> isConnectedController = StreamController<bool>.broadcast();
 
   static bool isSending = false;
   static Stream<bool> get isSendingStream => Stream.value(isSending);
@@ -37,13 +37,75 @@ class BleController extends GetxController {
   }
 
 // This function will help user to connect to BLE devices.
-  Future<void> connectToDevice(BluetoothDevice device) async {
-    try {
-      await device.connect(timeout: const Duration(seconds: 30));
-    } catch (e) {
-      const SnackBar(content: Text("Cannot Connect to device"));
-      rethrow;
-    }
+  Future<void> connectToDevice(BluetoothDevice device, BuildContext widgetContext, String name) async {
+    int connectionState = 0;
+    showDialog(
+      context: widgetContext, 
+      builder: (dialogContext) {
+        return AlertDialog(
+          title: Text("Connecting to ${name == "" ? "Device" : name}"),
+          content: StatefulBuilder(
+            builder: (stflContext, setState) {
+              while (stflContext.mounted) {
+                Future connectToDevice() async {
+                  if (connectionState == 0) {
+                    try {
+                      connectionState = 3;
+                      await device.connect(timeout: const Duration(seconds: 30));
+                    } catch (e) {
+                      if (stflContext.mounted && dialogContext.mounted) {
+                        setState(() {
+                        connectionState = 1;
+                      });
+                      }
+                    }
+                  }
+                }
+                bool isConnecting() {
+                  if (connectionState == 3) {
+                    return true;
+                  } else{
+                    return false;
+                  }
+                }
+                device.connectionState.listen((state) {
+                  if (state == BluetoothConnectionState.connected && stflContext.mounted && dialogContext.mounted) {
+                    setState(() {
+                      connectionState = 2;
+                    });
+                  } else if (!stflContext.mounted && !dialogContext.mounted) {
+                    return;
+                  }
+                });
+                connectToDevice();
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+
+                    Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: isConnecting() ? const CircularProgressIndicator() : const Text("Device not reachable"),
+                    ),
+
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          Navigator.of(dialogContext).pop();
+                        });
+                      },
+                      child: isConnecting() ? const Text("Cancel") : const Text("OK"),
+                    ),
+                  ]
+                );
+              };
+              Navigator.of(dialogContext).pop();
+              throw Exception("not mounted");
+            }
+          )
+        );
+      }
+    );
     /*
     device.connectionState.listen((isConnected) {
       if (isConnected == BluetoothConnectionState.connected) {

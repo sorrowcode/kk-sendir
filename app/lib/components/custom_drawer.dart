@@ -46,18 +46,49 @@ class _CustomDrawerState extends State<CustomDrawer> {
     });
   }
 
-  void _onTap(String name, String uuid, DeviceIdentifier remoteID) {
+  void _onTap(String name, String uuid, DeviceIdentifier remoteID) async {
     if (MyHomePage.selectedDevice != uuid) {
       BleController()
           .disconnectFromAll(true, BluetoothDevice(remoteId: remoteID));
-      BleController().connectToDevice(BluetoothDevice(remoteId: remoteID));
-      setState(() {
-        MyHomePage.selectedDevice = uuid;
+      BleController().connectToDevice(BluetoothDevice(remoteId: remoteID), context, name);
+      await Future.delayed(const Duration(milliseconds: 1000));
+      BluetoothDevice(remoteId: remoteID).connectionState.listen((state) {
+        if (state == BluetoothConnectionState.connected) {
+          setState(() {
+            MyHomePage.selectedDevice = uuid;
+          });
+        } else if (state == BluetoothConnectionState.disconnected) {
+          setState(() {
+            MyHomePage.selectedDevice = '0';
+
+            /*
+            showDialog(
+              context: context, 
+              builder: (context) => AlertDialog(
+                title: const Text('Device Disconnected'),
+                content: const Text('Device Disconnected'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('OK'),
+                  ),
+                ],
+              ),
+            );
+            */
+          });
+        }
       });
     } else {
       BleController().disconnectFromDevice(BluetoothDevice(remoteId: remoteID));
-      setState(() {
-        MyHomePage.selectedDevice = '0';
+      BluetoothDevice(remoteId: remoteID).connectionState.listen((state) {
+        if (state == BluetoothConnectionState.disconnected) {
+          setState(() {
+            MyHomePage.selectedDevice = '0';
+          });
+        }
       });
     }
   }

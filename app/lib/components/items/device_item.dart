@@ -5,6 +5,7 @@ class DeviceItem {
   late String deviceName;
   String uuid = const Uuid().v4();
   DeviceIdentifier remoteID;
+  bool online = false;
   DeviceItem({
     required this.deviceName,
     required this.remoteID,

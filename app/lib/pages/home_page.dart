@@ -30,7 +30,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   bool isSending = false;
 
-  Stream<bool> stream = BleController.isSendingController.stream;
+  Stream<bool> isSendingSignals = BleController.isSendingController.stream;
 
   void _initializeDeviceItems() {
     setState(() {
@@ -41,10 +41,28 @@ class _MyHomePageState extends State<MyHomePage> {
         ));
       }
     });
+    List<DeviceIdentifier> bluetoothDevices = [];
+    BleController().scanDevices();
+    BleController().scanResults.listen((scanResults) {
+      for (ScanResult result in scanResults) {
+        bluetoothDevices.add(result.device.remoteId);
+      }
+      for (DeviceItem item in _deviceItems) {
+        if (bluetoothDevices.contains(item.remoteID)) {
+          setState(() {
+            item.online = true;
+          });
+        } else {
+          setState(() {
+            item.online = false;
+          });
+        }
+      }
+    });
   }
 
   void _streamstart() {
-    stream.listen(
+    isSendingSignals.listen(
       (data) {
         setState(() {
           isSending = data;
@@ -89,6 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
     const ReceiverTab(),
   ];
 
+
   @override
   void initState() {
     super.initState();
@@ -99,6 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void dispose() {
     BleController.isSendingController.close();
+    BleController().stopScan();
     super.dispose();
   }
 

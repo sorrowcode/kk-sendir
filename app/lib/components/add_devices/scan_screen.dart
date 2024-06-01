@@ -130,7 +130,7 @@ class _ScanScreenState extends State<ScanScreen> {
                                     ),
                                   ),
                                   onTap: () {
-                                    controller.connectToDevice(data.device);
+                                    controller.connectToDevice(data.device, context, data.device.advName,);
                                     data.device.connectionState
                                         .listen((isConnected) {
                                       if (isConnected ==
