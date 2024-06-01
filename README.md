@@ -55,10 +55,12 @@ Several smartphones with the `app` are able to communicate to the IR adapter.
 ### Features
 - Two modes:
   - Emitting-Mode
+  - *
 - Connecting to Station with BLE
 - Sending default Keys to Station
 #### Upcoming features
 - Creating different "Remotes" (Storing different key combinations for various devices)
+- *Receiving Signals of remotes
 - Connecting via WiFi
 - sharing the device to others
 - adding Devices already in the local network
