@@ -44,21 +44,25 @@ Several smartphones with the `app` are able to communicate to the IR adapter.
 
 
 ### Structure
-- Various Screens (Modes/Remotes/Devices)
+- Various Screens (Modes/Remotes/Devices/Add new devices)
 - Different Devices (for multiple Adapters)
-- Remote design (img of a remote control with clickable keys)??
+- Remote design (Custom GridView with Keys)
 
 #### Possible Design:
 
 <img src="./assets/App%20Structure.png" alt="drawing" width="750"/>
 
-### Functions
+### Features
 - Two modes:
   - Emitting-Mode
-  - Receiving-Mode
+- Connecting to Station with BLE
+- Sending default Keys to Station
+#### Upcoming features
 - Creating different "Remotes" (Storing different key combinations for various devices)
+- Connecting via WiFi
+- sharing the device to others
+- adding Devices already in the local network
 
-### Architecture
 
 ## Devices
 
