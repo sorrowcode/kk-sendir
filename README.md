@@ -55,7 +55,7 @@ Several smartphones with the `app` are able to communicate to the IR adapter.
 ### Features
 - Two modes:
   - Emitting-Mode
-  - *
+  - Receiving-Mode
 - Connecting to Station with BLE
 - Sending default Keys to Station
 #### Upcoming features
